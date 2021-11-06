@@ -24,13 +24,12 @@ let $ = {
                     }
                 }
             }
-            return table;
         }
         return table;
     },
     hasNext: function (table) {
         let k = table.length - 1;
-        return Math.min(...table[k]) < 0;
+        return $.valid(table) && Math.min(...table[k]) < 0;
     },
     heatMap: function (old, table) {
         return table;

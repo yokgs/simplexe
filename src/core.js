@@ -1,4 +1,4 @@
-let x = 0;
+let x = ['abcde','uvw','xyzt'];
 let $ = {
     iterate: function (table) {
         if ($.hasNext(table)) {
@@ -37,8 +37,34 @@ let $ = {
     valid: function (table) {
         return true;
     },
-    createTable: function (string) {
+    duality: function (p) {
+        
+    },
+    createTable: function (str) {
+        var eq = str.trim().replace(/\|/g,'').replace(/[\n]+/g, ';').replace(/[;]+/g, ';').replace(/[\s]+/g, ' ');
+        eq = eq.replace(/[\s]*\+[\s]*/g, ' + ').replace(/[\s]*\-[\s]*/g, ' - ')
+            .replace(/[\s]*=[\s]*/g, ' = ')
+            .replace(/[\s]*>[\s]*/g, ' > ').replace(/[\s]*<[\s]*/g, ' < ')
+            .replace(/[\s]*>[\s]*=[\s]*/g, ' >= ').replace(/[\s]*<[\s]*=[\s]*/g, ' <= ').split(';');
+        if (!/^m(in|ax) ([\w]+ =)*/.test(eq[0])) {
+            return { type: 'error', content: '' };
+        }
+        for (let i in eq) {
+            eq[i] = eq[i].replace(/ \+ /g, '||+').replace(/ \- /g, '||-')
+                .replace(/ >= /g, '|||>=').replace(/ <= /g, '|||<=')
+                .replace(/ > /g, '|||>').replace(/ < /g, '|||<')
+                .replace(/ = /g, '|||=').split('|||');
+        }
+        return eq
+        let op,res;
+        
+        /*
+        min p = 2y + 6x - z;    -2 -6  1  0  0
+        x + y >= 0;              1  1  0 -1  0
+        z + 6x < 10;             6  0  1  0  1
 
+         */
     },
 
 }
+console.log($.createTable('max p = 89v+ 7u;\n8|v >= 6'));

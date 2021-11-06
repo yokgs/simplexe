@@ -3,10 +3,6 @@ let $ = {
     iterate: function (table) {
         if ($.hasNext(table)) {
             let k = table.length - 1;
-            /*[
-                [8, 9, 5],
-                [-7, -9, 0]
-            ]*/
             var min = Math.min(...table[k]);
             var en = table[k].indexOf(min),
                 p = [];
@@ -22,15 +18,14 @@ let $ = {
                     if (i == sr) {
                         table[i][j] /= table_[i][en];
                     } else if (j == en) {
-                        table[i][j]-=
+                        table[i][j] = 0;
                     } else {
-
+                        table[i][j] -= table_[i][en] / table_[sr][en] * table_[sr][j];
                     }
                 }
             }
             return table;
         }
-
         return table;
     },
     hasNext: function (table) {

@@ -53,10 +53,19 @@ let $ = {
             eq[i] = eq[i].replace(/ \+ /g, '||+').replace(/ \- /g, '||-')
                 .replace(/ >= /g, '|||>=|||').replace(/ <= /g, '|||<=|||')
                 .replace(/ > /g, '|||>|||').replace(/ < /g, '|||<|||')
-                .replace(/ = /g, '|||=|||').split('|||');
+                .replace(/ = /g, '|||=|||').split('|||').map(x => x.split('||').map(e => {
+                    if (/^m(in|ax)/.test(e)||/^[<>=]+/.test(e)) return e;
+                    if (!/^(\+|\-)/.test(e)) {
+                        e = '+' + e;
+                    }
+                    if (!/^(\+|\-)[\d]+[\w]*/.test(e)) {
+                        e = e.replace(/\+/, '+1').replace(/\-/, '-1');
+                    }
+                    return e;
+                }));
         }
        
-        let [op, res] = eq[0][0].split(' ');
+        let [op, res] = eq[0][0][0].split(' ');
         if (!res) res = '$P';
 
         console.log(res,op)
@@ -70,4 +79,4 @@ let $ = {
     },
 
 }
-console.log($.createTable('max = 89v+7u;\n8v>=6'));
+console.log($.createTable('max = 89v+7u;\n8v-r>=6'));

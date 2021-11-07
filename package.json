@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/yokgs/simplexe/issues"
   },
-  "homepage": "https://github.com/yokgs/simplexe#readme"
+  "homepage": "https://github.com/yokgs/simplexe#readme",
+  "dependencies": {
+    "vuejs": "^3.0.1"
+  }
 }

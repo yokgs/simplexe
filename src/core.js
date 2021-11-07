@@ -1,4 +1,5 @@
-let x = ['abcde','uvw','xyzt'];
+let x = ['abcde', 'uvw', 'xyzt'];
+let empty
 let $ = {
     iterate: function (table) {
         if ($.hasNext(table)) {
@@ -38,23 +39,26 @@ let $ = {
         return true;
     },
     duality: function (p) {
-        
+
     },
     createTable: function (str) {
-        var eq = str.trim().replace(/\|/g,'').replace(/[\n]+/g, ';').replace(/[;]+/g, ';').replace(/[\s]+/g, ' ');
+        var eq = str.trim().replace(/\|/g, '').replace(/[\n]+/g, ';').replace(/[;]+/g, ';').replace(/[\s]+/g, ' ');
         eq = eq.replace(/[\s]*\+[\s]*/g, ' + ').replace(/[\s]*\-[\s]*/g, ' - ')
             .replace(/[\s]*=[\s]*/g, ' = ')
             .replace(/[\s]*>[\s]*/g, ' > ').replace(/[\s]*<[\s]*/g, ' < ')
             .replace(/[\s]*>[\s]*=[\s]*/g, ' >= ').replace(/[\s]*<[\s]*=[\s]*/g, ' <= ').split(';');
         if (!/^m(in|ax) ([\w]+ =)*/.test(eq[0])) {
-            return { type: 'error', content: '' };
+            return {
+                type: 'error',
+                content: ''
+            };
         }
         for (let i in eq) {
             eq[i] = eq[i].replace(/ \+ /g, '||+').replace(/ \- /g, '||-')
                 .replace(/ >= /g, '|||>=|||').replace(/ <= /g, '|||<=|||')
                 .replace(/ > /g, '|||>|||').replace(/ < /g, '|||<|||')
                 .replace(/ = /g, '|||=|||').split('|||').map(x => x.split('||').map(e => {
-                    if (/^m(in|ax)/.test(e)||/^[<>=]+/.test(e)) return e;
+                    if (/^m(in|ax)/.test(e) || /^[<>=]+/.test(e)) return e;
                     if (!/^(\+|\-)/.test(e)) {
                         e = '+' + e;
                     }
@@ -64,24 +68,27 @@ let $ = {
                     return e;
                 }));
         }
-       console.log(eq)
+        console.log(eq)
         let [op, res] = eq[0][0][0].split(' ');
         if (!res) res = '$P';
-        let tab = [],tabx={},ii=1;
+        let tab = [],
+            tabx = {},
+            ii = 1;
         for (let i in eq) {
             if (i == 0) {
                 for (let j in eq[0][2]) {
                     var n = eq[0][2][j];
                     var k = n.match(/^(\+|\-)[\d]+/i)[0].length;
-                    var $var = n.substring(k,n.length);
+                    var $var = n.substring(k, n.length);
                     if (!($var in tabx)) tabx[$var] = 0;
                     tabx[$var] += Number(n.substr(0, k));
                 }
+                tabx['$result'] = 0;
                 console.log(tabx)
             } else {
                 var com = eq[i][1][0];
-                if (['<','<=','>=','>'].includes(com)) {
-                  var extra = (com == '>='||com=='>' ? '-' : '+') + '1Xn' + ii;
+                if (['<', '<=', '>=', '>'].includes(com)) {
+                    var extra = (com == '>=' || com == '>' ? '-' : '+') + '1Xn' + ii;
                     eq[i][0].push(extra);
                     //tabx['Xn' + ii] = 0;
                     ii++;
@@ -90,17 +97,32 @@ let $ = {
                 for (let j in eq[i][0]) {
                     var n = eq[i][0][j];
                     var k = n.match(/^(\+|\-)[\d]+/i)[0].length;
-                    var $var = n.substring(k,n.length);
+                    var $var = n.substring(k, n.length);
                     if (!($var in tab[i - 1])) tab[i - 1][$var] = 0;
                     if (!($var in tabx)) tabx[$var] = 0;
-                    tab[i-1][$var] += Number(n.substr(0, k));
+                    tab[i - 1][$var] += Number(n.substr(0, k));
                 }
                 tab[i - 1]['$result'] = Number(eq[i][2][0]);
             }
         }
-        console.log(tab,tabx)
-        console.log(res,op)
-         return eq
+        var table = [
+                []
+            ],
+            ind = {};
+        for (let i in tabx) {
+            ind[i] = table[0].length;
+            table[0].push(i);
+        }
+        for (let i in tab) {
+            var L = empty(table[0].length);
+            for (let j in tab[i]) {
+                L[ind[j]] = tab[i][j];
+            }
+            table.push(L);
+        }
+        console.log(table)
+        console.log(res, op)
+        return eq
         /*
         min p = 2y + 6x - z;    -2 -6  1  0  0
         x + y >= 0;              1  1  0 -1  0

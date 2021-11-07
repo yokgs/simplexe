@@ -67,7 +67,21 @@ let $ = {
        
         let [op, res] = eq[0][0][0].split(' ');
         if (!res) res = '$P';
-
+        let tab = [],tabx={};
+        for (let i in eq) {
+            if (i == 0) {
+                for (let j in eq[0][2]) {
+                    var n = eq[0][2][j];
+                    var k = n.match(/^(\+|\-)[\d]+[a-z]{1}/i)[0].length - 1;
+                    var $var = n.substring(k,n.length);
+                    if (!($var in tabx)) tabx[$var] = 0;
+                    tabx[$var] += Number(n.substr(0, k));
+                }
+                console.log(tabx)
+            } else {
+                
+            }
+        }
         console.log(res,op)
          return eq
         /*
@@ -79,4 +93,4 @@ let $ = {
     },
 
 }
-console.log($.createTable('max = 89v+7u;\n8v-r>=6'));
+console.log($.createTable('max = 89v-7u+90g-7u;\n8v-r>=6'));

@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/yokgs/simplexe#readme",
   "dependencies": {
+    "vue": "^2.6.14",
     "vuejs": "^3.0.1"
   }
 }

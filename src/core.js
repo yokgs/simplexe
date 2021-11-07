@@ -1,5 +1,10 @@
 let x = ['abcde', 'uvw', 'xyzt'];
-let empty
+let empty = n => {
+    var t = [];
+    for (let i = 0; i < n; i++)
+        t.push(0)
+    return t;
+}
 let $ = {
     iterate: function (table) {
         if ($.hasNext(table)) {
@@ -9,7 +14,7 @@ let $ = {
                 p = [];
             for (let i = 1; i < table.length - 1; i++) {
                 let r = table[i].slice(0, table[0].length);
-                let t = r[en] / r[r.length - 1];
+                let t = Math.abs(r[en] / r[r.length - 1]);
                 p = [...p, t];
             }
             var sr = p.indexOf(Math.min(...p)) + 1;
@@ -68,7 +73,6 @@ let $ = {
                     return e;
                 }));
         }
-        console.log(eq)
         let [op, res] = eq[0][0][0].split(' ');
         if (!res) res = '$P';
         let tab = [],
@@ -83,14 +87,11 @@ let $ = {
                     if (!($var in tabx)) tabx[$var] = 0;
                     tabx[$var] += Number(n.substr(0, k));
                 }
-                tabx['$result'] = 0;
-                console.log(tabx)
             } else {
                 var com = eq[i][1][0];
                 if (['<', '<=', '>=', '>'].includes(com)) {
                     var extra = (com == '>=' || com == '>' ? '-' : '+') + '1Xn' + ii;
                     eq[i][0].push(extra);
-                    //tabx['Xn' + ii] = 0;
                     ii++;
                 }
                 tab[i - 1] = {};
@@ -102,9 +103,10 @@ let $ = {
                     if (!($var in tabx)) tabx[$var] = 0;
                     tab[i - 1][$var] += Number(n.substr(0, k));
                 }
-                tab[i - 1]['$result'] = Number(eq[i][2][0]);
+                tab[i - 1][res] = Number(eq[i][2][0]);
             }
         }
+        tabx[res] = 0;
         var table = [
                 []
             ],
@@ -120,9 +122,12 @@ let $ = {
             }
             table.push(L);
         }
-        console.log(table)
-        console.log(res, op)
-        return eq
+        var L = []
+        for (let i in tabx) {
+            L[ind[i]] = tabx[i]==0?0:tabx[i]*-1;
+        }
+        table.push(L);
+        return table;
         /*
         min p = 2y + 6x - z;    -2 -6  1  0  0
         x + y >= 0;              1  1  0 -1  0
@@ -132,4 +137,4 @@ let $ = {
     },
 
 }
-console.log($.createTable('min p = 2y + 6x - z;x + y >= 0;z + 6x < 10'));
+console.log($.createTable('min p = 2y + 6x - z;x + y >= 0;z + 6x < 10;u + 89t>0;'));

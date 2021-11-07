@@ -72,7 +72,7 @@ let $ = {
             if (i == 0) {
                 for (let j in eq[0][2]) {
                     var n = eq[0][2][j];
-                    var k = n.match(/^(\+|\-)[\d]+[a-z]{1}/i)[0].length - 1;
+                    var k = n.match(/^(\+|\-)[\d]+/i)[0].length;
                     var $var = n.substring(k,n.length);
                     if (!($var in tabx)) tabx[$var] = 0;
                     tabx[$var] += Number(n.substr(0, k));

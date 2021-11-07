@@ -64,10 +64,10 @@ let $ = {
                     return e;
                 }));
         }
-       
+       console.log(eq)
         let [op, res] = eq[0][0][0].split(' ');
         if (!res) res = '$P';
-        let tab = [],tabx={};
+        let tab = [],tabx={},ii=1;
         for (let i in eq) {
             if (i == 0) {
                 for (let j in eq[0][2]) {
@@ -79,9 +79,26 @@ let $ = {
                 }
                 console.log(tabx)
             } else {
-                
+                var com = eq[i][1][0];
+                if (['<','<=','>=','>'].includes(com)) {
+                  var extra = (com == '>='||com=='>' ? '-' : '+') + '1Xn' + ii;
+                    eq[i][0].push(extra);
+                    //tabx['Xn' + ii] = 0;
+                    ii++;
+                }
+                tab[i - 1] = {};
+                for (let j in eq[i][0]) {
+                    var n = eq[i][0][j];
+                    var k = n.match(/^(\+|\-)[\d]+/i)[0].length;
+                    var $var = n.substring(k,n.length);
+                    if (!($var in tab[i - 1])) tab[i - 1][$var] = 0;
+                    if (!($var in tabx)) tabx[$var] = 0;
+                    tab[i-1][$var] += Number(n.substr(0, k));
+                }
+                tab[i - 1]['$result'] = Number(eq[i][2][0]);
             }
         }
+        console.log(tab,tabx)
         console.log(res,op)
          return eq
         /*
@@ -93,4 +110,4 @@ let $ = {
     },
 
 }
-console.log($.createTable('max = 89v-7u+90g-7u;\n8v-r>=6'));
+console.log($.createTable('min p = 2y + 6x - z;x + y >= 0;z + 6x < 10'));

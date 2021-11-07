@@ -51,13 +51,16 @@ let $ = {
         }
         for (let i in eq) {
             eq[i] = eq[i].replace(/ \+ /g, '||+').replace(/ \- /g, '||-')
-                .replace(/ >= /g, '|||>=').replace(/ <= /g, '|||<=')
-                .replace(/ > /g, '|||>').replace(/ < /g, '|||<')
-                .replace(/ = /g, '|||=').split('|||');
+                .replace(/ >= /g, '|||>=|||').replace(/ <= /g, '|||<=|||')
+                .replace(/ > /g, '|||>|||').replace(/ < /g, '|||<|||')
+                .replace(/ = /g, '|||=|||').split('|||');
         }
-        return eq
-        let op,res;
-        
+       
+        let [op, res] = eq[0][0].split(' ');
+        if (!res) res = '$P';
+
+        console.log(res,op)
+         return eq
         /*
         min p = 2y + 6x - z;    -2 -6  1  0  0
         x + y >= 0;              1  1  0 -1  0
@@ -67,4 +70,4 @@ let $ = {
     },
 
 }
-console.log($.createTable('max p = 89v+ 7u;\n8|v >= 6'));
+console.log($.createTable('max = 89v+7u;\n8v>=6'));

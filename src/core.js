@@ -14,7 +14,8 @@ let $ = {
                 p = [];
             for (let i = 1; i < table.length - 1; i++) {
                 let r = table[i].slice(0, table[0].length);
-                let t = Math.abs(r[en] / r[r.length - 1]);
+                let t = Math.abs(r[en] / r[r.length - 1])||Infinity;
+                console.log(t)
                 p = [...p, t];
             }
             var sr = p.indexOf(Math.min(...p)) + 1;
@@ -128,13 +129,11 @@ let $ = {
         }
         table.push(L);
         return table;
-        /*
-        min p = 2y + 6x - z;    -2 -6  1  0  0
-        x + y >= 0;              1  1  0 -1  0
-        z + 6x < 10;             6  0  1  0  1
-
-         */
     },
 
 }
-console.log($.createTable('min p = 2y + 6x - z;x + y >= 0;z + 6x < 10;u + 89t>0;'));
+function display(table) {
+    var body = document.body;
+    body.innerHTML='<table>' + table.map(x => ('<tr>' + x.map(t => ('<td>' + t + '</td>')).join('') + '</tr>')) + '</table>';
+}
+display($.createTable('max G=4470B+2316O+2650M;B+O+M<=1000;8B+8B+9M<=8750;9B+6O+45M<=16000'));

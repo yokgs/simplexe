@@ -129,11 +129,11 @@ let $ = {
         table.push(L);
         return table;
     },
+    data2html:function (tab) {
+        return '<table>' + tab.map(x => ('<tr>' + x.map(t => ('<td width="'+(100/x.length)+'%">' + t + '</td>')).join('') + '</tr>')) + '</table>'
+    }
+}
 
-}
-function data2html(tab) {
-    return '<table>' + tab.map(x => ('<tr>' + x.map(t => ('<td width="'+(100/x.length)+'%">' + t + '</td>')).join('') + '</tr>')) + '</table>'
-}
 function display(table) {
     var body = document.body;
     body.innerHTML = data2html(table);
@@ -142,5 +142,5 @@ function display(table) {
         body.innerHTML+=data2html(table);
     }
 }
-display($.createTable('max P = x + y;x + y <= 30;y <= 10'));//'max G=4470B+2316O+2650M;B+O+M<=1000;8B+8B+9M<=8750;9B+6O+45M<=16000'));
+//display($.createTable('max P = x + y;x + y <= 30;y <= 10'));//'max G=4470B+2316O+2650M;B+O+M<=1000;8B+8B+9M<=8750;9B+6O+45M<=16000'));
 //console.log($.iterate($.createTable('max G=4470B+2316O+2650M;B+O+M<=1000;8B+8B+9M<=8750;9B+6O+45M<=16000')))

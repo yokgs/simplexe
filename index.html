@@ -4,9 +4,16 @@
 
         <title>Simplexe - Yazid Slila</title>
         <script defer src="src/core.js"></script>
+        <script defer src="node_modules/vue/dist/vue.global.js"></script>
+        <script defer src="src/index.js"></script>
         <link rel="stylesheet" type="text/css" href="style/display.css">
     </head>
-    <body>
+    <body id="app">
             <input>
+            <textarea v-model="code" @keypress="refresh"></textarea>
+            <div v-if="OK" v-html="table[i]"></div>
+            <div v-else v-html="Error"></div>
+            <button v-if="OK"@click="next">next</button>
+            <button v-if="OK"@click="prev">prev</button>
     </body>
 </html>

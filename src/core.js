@@ -14,19 +14,18 @@ let $ = {
                 p = [];
             for (let i = 1; i < table.length - 1; i++) {
                 let r = table[i].slice(0, table[0].length);
-                let t = Math.abs(r[en] / r[r.length - 1])||Infinity;
-                console.log(t)
+                let t = Math.abs(r[r.length - 1]/r[en])||Infinity;
                 p = [...p, t];
             }
             var sr = p.indexOf(Math.min(...p)) + 1;
             var table_ = JSON.parse(JSON.stringify(table));
             for (let i = 1; i < table.length; i++) {
-                for (let j = 1; j < table[0].length; j++) {
+                for (let j = 0; j < table[0].length; j++) {
                     if (i == sr) {
                         table[i][j] /= table_[i][en];
-                    } else if (j == en) {
+                    } /*else if (j == en) {
                         table[i][j] = 0;
-                    } else {
+                    }*/ else {
                         table[i][j] -= table_[i][en] / table_[sr][en] * table_[sr][j];
                     }
                 }
@@ -132,8 +131,16 @@ let $ = {
     },
 
 }
+function data2html(tab) {
+    return '<table>' + tab.map(x => ('<tr>' + x.map(t => ('<td width="'+(100/x.length)+'%">' + t + '</td>')).join('') + '</tr>')) + '</table>'
+}
 function display(table) {
     var body = document.body;
-    body.innerHTML='<table>' + table.map(x => ('<tr>' + x.map(t => ('<td>' + t + '</td>')).join('') + '</tr>')) + '</table>';
+    body.innerHTML = data2html(table);
+    while ($.hasNext(table)) {
+        table = $.iterate(table);
+        body.innerHTML+=data2html(table);
+    }
 }
-display($.createTable('max G=4470B+2316O+2650M;B+O+M<=1000;8B+8B+9M<=8750;9B+6O+45M<=16000'));
+display($.createTable('max P = x + y;x + y <= 30;y <= 10'));//'max G=4470B+2316O+2650M;B+O+M<=1000;8B+8B+9M<=8750;9B+6O+45M<=16000'));
+//console.log($.iterate($.createTable('max G=4470B+2316O+2650M;B+O+M<=1000;8B+8B+9M<=8750;9B+6O+45M<=16000')))

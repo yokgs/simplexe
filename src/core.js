@@ -8,24 +8,15 @@ let empty = n => {
 let $ = {
     iterate: function (table) {
         if ($.hasNext(table)) {
-            let k = table.length - 1;
-            var min = Math.min(...table[k]);
-            var en = table[k].indexOf(min),
-                p = [];
-            for (let i = 1; i < table.length - 1; i++) {
-                let r = table[i].slice(0, table[0].length);
-                let t = Math.abs(r[r.length - 1]/r[en])||Infinity;
-                p = [...p, t];
-            }
-            var sr = p.indexOf(Math.min(...p)) + 1;
+            var [en, sr] = $.heatMap(table);
             var table_ = JSON.parse(JSON.stringify(table));
             for (let i = 1; i < table.length; i++) {
                 for (let j = 0; j < table[0].length; j++) {
                     if (i == sr) {
                         table[i][j] /= table_[i][en];
-                    } /*else if (j == en) {
+                    } else if (j == en) {
                         table[i][j] = 0;
-                    }*/ else {
+                    } else {
                         table[i][j] -= table_[i][en] / table_[sr][en] * table_[sr][j];
                     }
                 }
@@ -37,8 +28,18 @@ let $ = {
         let k = table.length - 1;
         return $.valid(table) && Math.min(...table[k]) < 0;
     },
-    heatMap: function (old, table) {
-        return table;
+    heatMap: function (table) {
+        let k = table.length - 1;
+            var min = Math.min(...table[k]);
+            var en = table[k].indexOf(min),
+                p = [];
+            for (let i = 1; i < table.length - 1; i++) {
+                let r = table[i].slice(0, table[0].length);
+                let t = Math.abs(r[r.length - 1]/r[en])||Infinity;
+                p = [...p, t];
+            }
+        var sr = p.indexOf(Math.min(...p)) + 1;
+        return [en, sr];
     },
     valid: function (table) {
         return true;
@@ -129,8 +130,9 @@ let $ = {
         table.push(L);
         return table;
     },
-    data2html:function (tab) {
-        return '<table>' + tab.map(x => ('<tr>' + x.map(t => ('<td width="'+(100/x.length)+'%">' + t + '</td>')).join('') + '</tr>')) + '</table>'
+    data2html: function (tab,t) {
+        var [en, sr] = t;
+        return '<table>' + tab.map((x,i) => ('<tr'+(i==sr?' class="v-input"':'')+'>' + x.map((t,j) => ('<td width="'+(100/x.length)+'%"'+(j==en?' class="input"':'')+'>' + t + '</td>')).join('') + '</tr>')) + '</table>'
     }
 }
 

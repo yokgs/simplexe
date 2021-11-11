@@ -1,9 +1,10 @@
 let app = {
     data() {
         return {
-            code: "",
+            code: "max G = 4470B + 2316O + 2650M;B + O + M <= 1000;8B + 8B + 9M <= 8750;9B + 6O + 45M <= 16000",
             cache: [],
-            table: "",
+            table: [],
+            tab: [],
             i: 0,
             Error: '',
             OK:true
@@ -11,6 +12,11 @@ let app = {
     },
     methods: {
         refresh() {
+            if (this.code.trim()=='') {
+                this.Error = 'Empty Table';
+                this.OK = false;
+                return 0;
+            }
             this.table = [];
             var tab = $.createTable(this.code);
             if ('type' in tab) {
@@ -18,10 +24,11 @@ let app = {
                 this.OK = false;
             } else {
                 this.OK = true;
-                this.table.push($.data2html(tab));
+                this.table.push($.data2html(tab,[tab[0].length,tab.length]));
             while ($.hasNext(tab)) {
                 tab = $.iterate(tab);
-                this.table.push($.data2html(tab));
+                this.table.push($.data2html(tab, $.heatMap(tab)));
+                //this.cache.push(tab);
             }
             }
             

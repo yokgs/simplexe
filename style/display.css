@@ -20,15 +20,20 @@ tr.v-input{
 tr.v-input>td.input{
     background-color: #bf0;
 }
-button.active{
+.button{
     border: 0;
     padding: .5em;
     border-radius: .5em;
     height: auto;
     font-size: 1rem;
-    background-color: #07f;
+    background-color: #678;
+    opacity: .7;
     color:#fff;
     box-sizing: border-box;
+}
+.button.active{
+    background-color: #07f;
+    opacity: 1;
 }
 .error{
     display: flex;
@@ -42,4 +47,7 @@ button.active{
     background-color: #d45;
     color: #ffe;
     border-radius: .7em;
+}
+.head{
+    
 }

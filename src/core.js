@@ -6,7 +6,8 @@ let empty = n => {
     return t;
 }
 let $ = {
-    iterate: function (table) {
+    iterate: function (table$) {
+        var table = $.clone(table$);
         if ($.hasNext(table)) {
             var [en, sr] = $.heatMap(table);
             var table_ = JSON.parse(JSON.stringify(table));
@@ -29,7 +30,8 @@ let $ = {
         return $.valid(table) && Math.min(...table[k]) < 0;
     },
     heatMap: function (table) {
-        let k = table.length - 1;
+        if ($.hasNext(table)) {
+            let k = table.length - 1;
             var min = Math.min(...table[k]);
             var en = table[k].indexOf(min),
                 p = [];
@@ -40,6 +42,9 @@ let $ = {
             }
         var sr = p.indexOf(Math.min(...p)) + 1;
         return [en, sr];
+        }
+        return [NaN,NaN]
+        
     },
     valid: function (table) {
         return true;
@@ -83,10 +88,10 @@ let $ = {
             if (i == 0) {
                 for (let j in eq[0][2]) {
                     var n = eq[0][2][j];
-                    var k = n.match(/^(\+|\-)[\d]+/i)[0].length;
+                    var k = n.match(/^(\+|\-)[\d\.\,]+/i)[0].length;
                     var $var = n.substring(k, n.length);
                     if (!($var in tabx)) tabx[$var] = 0;
-                    tabx[$var] += Number(n.substr(0, k));
+                    tabx[$var] += Number(n.replace(/,/g,'.').substr(0, k));
                 }
             } else {
                 var com = eq[i][1][0];
@@ -98,11 +103,11 @@ let $ = {
                 tab[i - 1] = {};
                 for (let j in eq[i][0]) {
                     var n = eq[i][0][j];
-                    var k = n.match(/^(\+|\-)[\d]+/i)[0].length;
+                    var k = n.match(/^(\+|\-)[\d\.\,]+/i)[0].length;
                     var $var = n.substring(k, n.length);
                     if (!($var in tab[i - 1])) tab[i - 1][$var] = 0;
                     if (!($var in tabx)) tabx[$var] = 0;
-                    tab[i - 1][$var] += Number(n.substr(0, k));
+                    tab[i - 1][$var] += Number(n.replace(/,/g,'.').substr(0, k));
                 }
                 tab[i - 1][res] = Number(eq[i][2][0]);
             }
@@ -133,7 +138,8 @@ let $ = {
     data2html: function (tab,t) {
         var [en, sr] = t;
         return '<table>' + tab.map((x,i) => ('<tr'+(i==sr?' class="v-input"':'')+'>' + x.map((t,j) => ('<td width="'+(100/x.length)+'%"'+(j==en?' class="input"':'')+'>' + t + '</td>')).join('') + '</tr>')) + '</table>'
-    }
+    },
+    clone:x=>JSON.parse(JSON.stringify(x)),
 }
 
 function display(table) {

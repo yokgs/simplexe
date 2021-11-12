@@ -1,19 +1,32 @@
 <!DOCTYPE html>
 <html>
-    <head>
 
-        <title>Simplexe - Yazid Slila</title>
-        <script defer src="src/core.js"></script>
-        <script defer src="node_modules/vue/dist/vue.global.js"></script>
-        <script defer src="src/index.js"></script>
-        <link rel="stylesheet" type="text/css" href="style/display.css">
-    </head>
-    <body id="app">
-            <input>
-            <textarea v-model="code" @keypress="refresh"></textarea>
-            <div v-if="OK" v-html="table[i]"></div>
-            <div class="error" v-else v-html="Error"></div>
-            <button class="active" v-if="OK"@click="next">next</button>
-            <button class="active" v-if="OK"@click="prev">prev</button>
-    </body>
+<head>
+    <title>Simplexe - Yazid Slila</title>
+    <script defer src="src/core.js"></script>
+    <script defer src="node_modules/vue/dist/vue.global.js"></script>
+    <script defer src="src/index.js"></script>
+    <link rel="stylesheet" type="text/css" href="style/display.css">
+</head>
+
+<body id="app">
+    <header class="head">
+        Simplexe
+    </header>
+    <input>
+    <textarea v-model="code" @keypress="refresh"></textarea>
+    <button class="button active" @click="refresh">solve</button>
+    <div class="info">
+        iteration : {{ table.length == 0 ? 0 :table.length - 1}}
+        n d'iteration : {{ i }}
+    </div>
+    <div v-if="OK" v-html="table[i]"></div>
+    <div class="error" v-else v-html="Error"></div>
+    <div v-if="OK" class="btns">
+        <button :class="prevStyle" @click="prev">prev</button>
+        <button :class="nextStyle" @click="next">next</button>
+    </div>
+
+</body>
+
 </html>

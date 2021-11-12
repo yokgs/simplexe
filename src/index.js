@@ -7,12 +7,12 @@ let app = {
             tab: [],
             i: 0,
             Error: '',
-            OK:true
+            OK: true
         }
     },
     methods: {
         refresh() {
-            if (this.code.trim()=='') {
+            if (this.code.trim() == '') {
                 this.Error = 'Empty Table';
                 this.OK = false;
                 return 0;
@@ -24,22 +24,33 @@ let app = {
                 this.OK = false;
             } else {
                 this.OK = true;
-                this.table.push($.data2html(tab,[tab[0].length,tab.length]));
-            while ($.hasNext(tab)) {
-                tab = $.iterate(tab);
                 this.table.push($.data2html(tab, $.heatMap(tab)));
-                //this.cache.push(tab);
+                while ($.hasNext(tab) && this.table.length <= 10) {
+                    tab = $.iterate(tab);
+                    this.table.push($.data2html(tab, $.heatMap(tab)));
+                }
+                if (this.table.length > 10) {
+                    this.Error = 'Long term operation . double check your equations elseway we do not recommend you to use this algorithm';
+                    this.OK = false;
+                }
             }
-            }
-            
+
         },
         next() {
-            if (this.i < this.table.length - 1) 
+            if (this.i < this.table.length - 1)
                 this.i++;
         },
         prev() {
-            if (this.i > 0) 
+            if (this.i > 0)
                 this.i--;
+        }
+    },
+    computed: {
+        prevStyle() {
+            return 'button' + (this.i > 0 ? ' active' : '');
+        },
+        nextStyle() {
+            return 'button' + (this.i < this.table.length - 1 ? ' active' : '');
         }
     }
 };

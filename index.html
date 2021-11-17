@@ -28,9 +28,13 @@
                 </select></div>
         </div>
 
-        <textarea v-model="code" @keypress="refresh" :rows="Rows"></textarea>
-        <button class="button active" @click="refresh">solve</button>
-        <button class="button active" @click="format">format</button>
+        <div class="input-box">
+            <textarea v-model="code" @keypress="refresh" :rows="Rows"></textarea>
+            <div class="btn-grp">
+                <button class="button active" @click="refresh">solve</button>
+                <button class="button active" @click="format">format</button>
+            </div>
+        </div>
         <div class="info">
             <div>nombre des iterations : {{ table.length == 0 ? 0 :table.length - 1}}</div>
             <div>iteration numéro : {{ i }}</div>

@@ -1,4 +1,41 @@
-table{
+html{
+    text-rendering: optimizeLegibility;
+    -moz-osx-font-smoothing:grayscale;
+    text-size-adjust: 100%;
+    height: 100%;
+    font-size: 16px;
+    display: block;
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    position: relative;
+}
+*{
+    outline: none;
+}
+input{
+    background-color: transparent;
+    border: 1px solid rgba(0, 0, 0, .1);
+    text-align: center;
+    padding: 10px;
+    -webkit-appearance:none;
+}
+button{
+    box-sizing: border-box;
+}
+.content{
+    height: 100%;
+}
+
+input:invalid {
+    background-color: #d45;
+    color: #fff;
+}
+
+table {
     border-collapse: collapse;
     width: calc(100% - 2em);
     text-align: center;
@@ -7,20 +44,25 @@ table{
     box-sizing: border-box;
     margin: 1em;
 }
-td{
+
+td {
     border: 1px solid #07f;
     padding: .3em;
 }
-td.input{
+
+td.input {
     background-color: #ff0;
 }
-tr.v-input{
+
+tr.v-input {
     background-color: #8f0;
 }
-tr.v-input>td.input{
+
+tr.v-input>td.input {
     background-color: #bf0;
 }
-.button{
+
+.button {
     border: 0;
     padding: .5em;
     border-radius: .5em;
@@ -28,17 +70,21 @@ tr.v-input>td.input{
     font-size: 1rem;
     background-color: #678;
     opacity: .7;
-    color:#fff;
+    color: #fff;
     box-sizing: border-box;
+    cursor: not-allowed;
 }
-.button.active{
+
+.button.active {
     background-color: #07f;
     opacity: 1;
+    cursor: pointer;
 }
-.error{
+
+.error {
     display: flex;
     width: calc(100% - 2em);
-    min-height:75px;
+    min-height: 75px;
     justify-content: center;
     align-items: center;
     padding: 1em;
@@ -48,6 +94,49 @@ tr.v-input>td.input{
     color: #ffe;
     border-radius: .7em;
 }
-.head{
-    
+
+.head {
+    width: 100%;
+    height: 60px;
+    background-color: #dd4455;
+    color: #fff;
+    z-index: 2;
+    position: relative;
+}
+
+.menu {
+    position: fixed;
+    top: 60px;
+    right: 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 3px #678;
+    padding: 0;
+    border-radius: 0 0 15px 15px;
+    z-index: 1;
+}
+.menu>div{
+    padding: 20px;
+}
+.menu>div:not(:last-child){
+    border-bottom: 1px solid #000;
+}
+
+textarea {
+    width: 50%;
+    border: 0;
+    border-radius: 1em;
+    padding: 1em;
+    background-color: rgba(0, 0, 0, .1);
+    font-family: monospace;
+    color: #222;
+}
+.action{
+    background-color: rgba(0, 0, 0, .1);
+    border: 0;
+    height: calc(100% - 20px);
+    top:10px;
+    right:10px;
+    position: absolute;
+    border-radius: 10px;
+    padding: 10px;
 }

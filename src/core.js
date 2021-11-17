@@ -1,4 +1,4 @@
-let x = ['abcde', 'uvw', 'xyzt'];
+let x = ['abcdefghijklmnopxyz'];
 let empty = n => {
     var t = [];
     for (let i = 0; i < n; i++)
@@ -10,7 +10,7 @@ let $ = {
         var table = $.clone(table$);
         if ($.hasNext(table)) {
             var [en, sr] = $.heatMap(table);
-            var table_ = JSON.parse(JSON.stringify(table));
+            var table_ = $.clone(table);
             for (let i = 1; i < table.length; i++) {
                 for (let j = 0; j < table[0].length; j++) {
                     if (i == sr) {
@@ -37,27 +37,48 @@ let $ = {
                 p = [];
             for (let i = 1; i < table.length - 1; i++) {
                 let r = table[i].slice(0, table[0].length);
-                let t = Math.abs(r[r.length - 1]/r[en])||Infinity;
+                let t = Math.abs(r[r.length - 1] / r[en]) || Infinity;
                 p = [...p, t];
             }
-        var sr = p.indexOf(Math.min(...p)) + 1;
-        return [en, sr];
+            var sr = p.indexOf(Math.min(...p)) + 1;
+            return [en, sr];
         }
-        return [NaN,NaN]
-        
+        return [NaN, NaN]
+
     },
     valid: function (table) {
         return true;
     },
-    duality: function (p) {
+    duality: function (table) {
+        var l = table.length,
+            resEq = [...table[l - 1]],
+            labels = [...table[0]];
+        var nLabels = $.generate(labels,l - 2);
 
     },
-    createTable: function (str) {
+    generate: function (old, size) {
+        var r_ = 'abcdefghijklmnopqrstuvwxyz',ens=[];
+        var r=[...r_,...r_.toUpperCase()];
+        for (let i of r) {
+            if (!old.includes(i))
+                ens.push(i);
+        }
+        if (ens.length < size) {
+            var C = ens[Math.floor(Math.random() * ens.length)].toUpperCase();
+            ens=r.map(x=>(C+x))
+        }
+        return ens.slice(Math.floor(Math.random() * (ens.length - size)), size);
+    },
+    format: function (str) {
         var eq = str.trim().replace(/\|/g, '').replace(/[\n]+/g, ';').replace(/[;]+/g, ';').replace(/[\s]+/g, ' ');
         eq = eq.replace(/[\s]*\+[\s]*/g, ' + ').replace(/[\s]*\-[\s]*/g, ' - ')
             .replace(/[\s]*=[\s]*/g, ' = ')
             .replace(/[\s]*>[\s]*/g, ' > ').replace(/[\s]*<[\s]*/g, ' < ')
-            .replace(/[\s]*>[\s]*=[\s]*/g, ' >= ').replace(/[\s]*<[\s]*=[\s]*/g, ' <= ').split(';');
+            .replace(/[\s]*>[\s]*=[\s]*/g, ' >= ').replace(/[\s]*<[\s]*=[\s]*/g, ' <= ').replace(/;/g, '\n');
+        return eq;
+    },
+    createTable: function (str) {
+        var eq = $.format(str).split('\n');
         if (!/^m(in|ax) ([\w]+ =)*/.test(eq[0])) {
             return {
                 type: 'error',
@@ -70,12 +91,10 @@ let $ = {
                 .replace(/ > /g, '|||>|||').replace(/ < /g, '|||<|||')
                 .replace(/ = /g, '|||=|||').split('|||').map(x => x.split('||').map(e => {
                     if (/^m(in|ax)/.test(e) || /^[<>=]+/.test(e)) return e;
-                    if (!/^(\+|\-)/.test(e)) {
+                    if (!/^(\+|\-)/.test(e))
                         e = '+' + e;
-                    }
-                    if (!/^(\+|\-)[\d]+[\w]*/.test(e)) {
+                    if (!/^(\+|\-)[\d]+[\w]*/.test(e))
                         e = e.replace(/\+/, '+1').replace(/\-/, '-1');
-                    }
                     return e;
                 }));
         }
@@ -91,12 +110,12 @@ let $ = {
                     var k = n.match(/^(\+|\-)[\d\.\,]+/i)[0].length;
                     var $var = n.substring(k, n.length);
                     if (!($var in tabx)) tabx[$var] = 0;
-                    tabx[$var] += Number(n.replace(/,/g,'.').substr(0, k));
+                    tabx[$var] += Number(n.replace(/,/g, '.').substr(0, k));
                 }
             } else {
                 var com = eq[i][1][0];
                 if (['<', '<=', '>=', '>'].includes(com)) {
-                    var extra = (com == '>=' || com == '>' ? '-' : '+') + '1Xn' + ii;
+                    var extra = (com == '>=' || com == '>' ? '-' : '+') + '1X' + ii;
                     eq[i][0].push(extra);
                     ii++;
                 }
@@ -107,7 +126,7 @@ let $ = {
                     var $var = n.substring(k, n.length);
                     if (!($var in tab[i - 1])) tab[i - 1][$var] = 0;
                     if (!($var in tabx)) tabx[$var] = 0;
-                    tab[i - 1][$var] += Number(n.replace(/,/g,'.').substr(0, k));
+                    tab[i - 1][$var] += Number(n.replace(/,/g, '.').substr(0, k));
                 }
                 tab[i - 1][res] = Number(eq[i][2][0]);
             }
@@ -130,16 +149,21 @@ let $ = {
         }
         var L = []
         for (let i in tabx) {
-            L[ind[i]] = tabx[i]==0?0:tabx[i]*-1;
+            L[ind[i]] = tabx[i] == 0 ? 0 : tabx[i] * -1;
         }
         table.push(L);
         return table;
     },
-    data2html: function (tab,t) {
+    data2html: function (tab, t, prec) {
         var [en, sr] = t;
-        return '<table>' + tab.map((x,i) => ('<tr'+(i==sr?' class="v-input"':'')+'>' + x.map((t,j) => ('<td width="'+(100/x.length)+'%"'+(j==en?' class="input"':'')+'>' + t + '</td>')).join('') + '</tr>')) + '</table>'
+        return '<table>' + tab.map((x, i) => ('<tr' + (i == sr ? ' class="v-input"' : '') + '>' + x.map((t, j) => ('<td width="' + (100 / x.length) + '%"' + (j == en ? ' class="input"' : '') + '>' + (typeof t == 'number' ? Number(t.toFixed(prec)) : $.indexHTML(t)) + '</td>')).join('') + '</tr>')).join('') + '</table>'
     },
-    clone:x=>JSON.parse(JSON.stringify(x)),
+    indexHTML: function (s) {
+        var v = (s.match(/^[a-zA-Z]+/) || [''])[0];
+        var i = s.replace(v, '');
+        return v+'<sub>'+i+'</sub>'
+    },
+    clone: x => JSON.parse(JSON.stringify(x)),
 }
 
 function display(table) {
@@ -147,7 +171,7 @@ function display(table) {
     body.innerHTML = data2html(table);
     while ($.hasNext(table)) {
         table = $.iterate(table);
-        body.innerHTML+=data2html(table);
+        body.innerHTML += data2html(table);
     }
 }
 //display($.createTable('max P = x + y;x + y <= 30;y <= 10'));//'max G=4470B+2316O+2650M;B+O+M<=1000;8B+8B+9M<=8750;9B+6O+45M<=16000'));

@@ -1,0 +1,80 @@
+.content.light{
+    background-color: #fff;
+}
+.light textarea,
+.light input,
+.light button,
+.content.light{
+    color:#222;
+}
+.content.dark{
+    background-color: #222;
+}
+.dark textarea,
+.dark input,
+.dark button,
+.content.dark{
+    color:#eee;
+}
+.content.solarized{
+    background-color: #feb;
+}
+.solarized textarea,
+.solarized input,
+.solarized button,
+.content.solarized{
+    color:#026;
+}
+.dark td {
+    border-color: #acf;
+}
+.solarized td{
+    border-color: #28b;
+}
+.light td.input {
+    background-color: #ff0;
+}
+.dark td.input {
+    background-color: #446;
+}
+.solarized td.input {
+    background-color: #fd9;
+}
+.light tr.v-input {
+    background-color: #8f0;
+}
+.dark tr.v-input {
+    background-color: #646;
+}
+.solarized tr.v-input {
+    background-color: #bd9;
+}
+
+.light tr.v-input>td.input {
+    background-color: #bf0;
+}
+.dark tr.v-input>td.input {
+    background-color: #546;
+}
+.solarized tr.v-input>td.input {
+    background-color: #dd9;
+}
+.light .head{
+    background-color: #fb0;
+    color:#111;
+}
+.dark .head {
+    background-color: #3f3f3f;
+    color: #fff;
+}
+.solarized .head {
+background-color: #eda;
+color:#039;
+}
+.dark .menu{
+background-color: #444;
+box-shadow: none;
+}
+.solarized .menu{
+    background-color: #eda;
+}

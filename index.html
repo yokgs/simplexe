@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=divice-width, initial-scale=1">
     <title>Simplexe - Yazid Slila</title>
     <script defer src="src/core.js"></script>
-    <script src="node_modules/vue/dist/vue.global.prod.js"></script>
+    <script src="src/vue.js"></script>
     <script defer src="src/index.js"></script>
     <link rel="stylesheet" type="text/css" href="style/display.css">
     <link rel="stylesheet" type="text/css" href="style/theme.css">
@@ -16,21 +16,25 @@
     <div :class="[theme,'content']">
         <header class="head">
             Simplexe
-            <button @click="toggleMenu" class="action">param</button>
+            <button @click="toggleMenu" class="menu-button">param</button>
         </header>
         <div v-if="menu" class="menu">
             <div>display precision : <input v-model="epsilon" min="0" max="10" @change="refresh" type="number">
             </div>
-            <div>theme : {{ theme }} <select v-model="theme">
+            <div>theme : <div class="select">{{ theme }} <select v-model="theme">
                     <option>light</option>
                     <option>dark</option>
                     <option>solarized</option>
-                </select></div>
+                    <option>solarized fire</option>
+                    <option>solarized gold</option>
+                    <option>solarized nature</option>
+                    <option>solarized shadow</option>
+                </select></div></div>
         </div>
 
-        <div class="input-box">
+        <div class="input-container">
             <textarea v-model="code" @keypress="refresh" :rows="Rows"></textarea>
-            <div class="btn-grp">
+            <div class="buttons-group">
                 <button class="button active" @click="refresh">solve</button>
                 <button class="button active" @click="format">format</button>
             </div>
@@ -38,15 +42,14 @@
         <div class="info">
             <div>nombre des iterations : {{ table.length == 0 ? 0 :table.length - 1}}</div>
             <div>iteration numéro : {{ i }}</div>
-            <div>precision {{ epsilon }}</div>
+            <div>precision : {{ epsilon }}</div>
+            <div v-if="OK || i==table.length-1">{{ solution }}</div>
+            {{ alpha }}
         </div>
         <div v-if="OK" v-html="table[i]"></div>
         <div class="error" v-else v-html="Error"></div>
-        <div v-if="OK && i==table.length-1">
-            {{ solution }}
-        </div>
 
-        <div v-if="OK" class="btns">
+        <div v-if="OK" class="navigation">
             <button :class="prevStyle" @click="prev">prev</button>
             <button :class="nextStyle" @click="next">next</button>
         </div>

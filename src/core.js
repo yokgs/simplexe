@@ -49,25 +49,40 @@ let $ = {
     valid: function (table) {
         return true;
     },
+    /*complete: function (eq) {
+        for (let i in eq ){
+            var t = eq[i];
+            if ([">=","<=",">","<","="].includes(t[0])) {
+                G[];
+            }
+        }
+    },*/
     duality: function (table) {
-        var l = table.length,
+        var l = table.length - 2,
             resEq = [...table[l - 1]],
             labels = [...table[0]];
-        var nLabels = $.generate(labels,l - 2);
+        var nLabels = $.generate(labels, l);
+
 
     },
     generate: function (old, size) {
-        var r_ = 'abcdefghijklmnopqrstuvwxyz',ens=[];
-        var r=[...r_,...r_.toUpperCase()];
+        var r_ = 'abcdefghijklmnopqrstuvwyz',
+            ens = [];
+        var r = [...r_, ...r_.toUpperCase()];
         for (let i of r) {
             if (!old.includes(i))
                 ens.push(i);
         }
-        if (ens.length < size) {
+        /*if (ens.length < size) {
             var C = ens[Math.floor(Math.random() * ens.length)].toUpperCase();
             ens=r.map(x=>(C+x))
+        }*/
+        var v = ens[Math.floor(Math.random() * ens.length)],
+            t = [];
+        for (let i = 0; i < size; i++) {
+            t.push(v + (i + 1));
         }
-        return ens.slice(Math.floor(Math.random() * (ens.length - size)), size);
+        return t
     },
     format: function (str) {
         var eq = str.trim().replace(/\|/g, '').replace(/[\n]+/g, ';').replace(/[;]+/g, ';').replace(/[\s]+/g, ' ');
@@ -98,6 +113,9 @@ let $ = {
                     return e;
                 }));
         }
+        /*if (op == "min") {
+            eq = $.duality(eq);
+        }*/
         let [op, res] = eq[0][0][0].split(' ');
         if (!res) res = '$P';
         let tab = [],
@@ -161,7 +179,7 @@ let $ = {
     indexHTML: function (s) {
         var v = (s.match(/^[a-zA-Z]+/) || [''])[0];
         var i = s.replace(v, '');
-        return v+'<sub>'+i+'</sub>'
+        return v + '<sub>' + i + '</sub>'
     },
     clone: x => JSON.parse(JSON.stringify(x)),
 }

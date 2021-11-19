@@ -6,6 +6,7 @@ let app = {
             table: [],
             tab: [],
             i: 0,
+            alpha:'',
             Error: '',
             OK: true,
             menu: false,
@@ -30,9 +31,10 @@ let app = {
             } else {
                 this.OK = true;
                 this.table.push($.data2html(tab, $.heatMap(tab), this.epsilon));
+                this.alpha = $.duality(tab);
                 while ($.hasNext(tab) && this.table.length <= 10) {
                     tab = $.iterate(tab);
-                    this.table.push($.data2html(tab, $.heatMap(tab),this.epsilon));
+                    this.table.push($.data2html(tab, $.heatMap(tab), this.epsilon));
                 }
                 this.solution = tab[0][tab[0].length - 1] + '* = ' + tab[tab.length - 1][tab[tab.length - 1].length - 1];
                 if (this.table.length > 10) {

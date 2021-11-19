@@ -32,7 +32,7 @@ button {
 }
 
 .content {
-    height: 100%;
+    min-height: 100%;
 }
 
 input:invalid {
@@ -205,11 +205,12 @@ position: relative;
     .buttons-group{
         flex-direction: row;
     }
-    textarea{
+    .code{
         width: calc(100% - 20px);
         margin: 0 10px ;
     }
     .menu{
+        position: fixed;
         width: 100%;
         height: calc(100% - 60px);
         right: 0;

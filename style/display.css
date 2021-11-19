@@ -160,7 +160,7 @@ textarea {
     width: 100%;
     display: flex;
     justify-content: center;
-    align-items: stretch;
+    align-items: center;
     margin: 10px 0;
 }
 .buttons-group {

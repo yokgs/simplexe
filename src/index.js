@@ -1,19 +1,19 @@
 let app = {
     data() {
-        return {
+        return Lockr.get('YS-CACHE', {
             code: "max G = 4470B + 2316O + 2650M;B + O + M <= 1000;8B + 8O + 9M <= 8750;9B + 6O + 45M <= 16000",
             cache: [],
             table: [],
             tab: [],
             i: 0,
-            alpha:'',
+            alpha: '',
             Error: '',
             OK: true,
             menu: false,
             epsilon: 4,
             theme: 'light',
-            solution:''
-        }
+            solution: ''
+        });
     },
     methods: {
         refresh() {
@@ -43,6 +43,7 @@ let app = {
                 }
             }
             this.i = 0;
+            this.save();
         },
         next() {
             if (this.i < this.table.length - 1)
@@ -54,9 +55,26 @@ let app = {
         },
         format() {
             this.code = $.format(this.code);
+            this.save();
         },
         toggleMenu() {
             this.menu = !this.menu;
+        },
+        save() {
+            Lockr.set('YS-CACHE', {
+                code:this.code,
+                cache: this.cache,
+                table: this.table,
+                tab: this.tab,
+                i: 0,
+                alpha: '',
+                Error: this.Error,
+                OK: this.OK,
+                menu: false,
+                epsilon: this.epsilon,
+                theme:this.theme,
+                solution: this.solution
+            });
         }
     },
     computed: {
@@ -68,6 +86,12 @@ let app = {
         },
         Rows() {
             return Math.max(7, this.code.split('\n').length);
+        }
+    },
+    watch: {
+        theme(o,n) {
+            if (o!=n)
+                this.save();
         }
     }
 };

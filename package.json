@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/yokgs/simplexe#readme",
   "dependencies": {
+    "lockr": "^0.9.0-beta.0",
     "vue": "^3.2.21"
   }
 }

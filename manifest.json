@@ -1,0 +1,8 @@
+{
+    "name": "Simplexe - Yazid Slila",
+    "short_name": "Simplexe",
+    "start_url": "./index.html",
+    "display": "standalone",
+    "background_color": "#fff",
+    "description": "Simple application to solve mathematical problems."
+}

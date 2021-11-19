@@ -4,5 +4,27 @@
     "start_url": "./index.html",
     "display": "standalone",
     "background_color": "#fff",
-    "description": "Simple application to solve mathematical problems."
+    "description": "Simple application to solve mathematical problems.",
+    "icons": [
+        {
+            "src": "assets/x64.png",
+            "sizes": "64x64",
+            "type": "image/png"
+        },
+        {
+            "src": "assets/x128.png",
+            "sizes": "128x128",
+            "type": "image/png"
+        },
+        {
+            "src": "assets/x256.png",
+            "sizes": "256x256",
+            "type": "image/png"
+        },
+        {
+            "src": "assets/x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
 }

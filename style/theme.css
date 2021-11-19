@@ -8,7 +8,7 @@
     --mark2: #bf0;
     --mark3: #0f0;
     --accent: #07f;
-    --disable:#888;
+    --disable: #888;
 }
 
 .content.dark {
@@ -21,7 +21,7 @@
     --mark2: rgb(150, 160, 119);
     --mark3: rgb(117, 160, 117);
     --accent: #4a4a4a;
-    --disable:#888;
+    --disable: #888;
 }
 
 .content.solarized {
@@ -34,34 +34,38 @@
     --mark0: #93a1a1;
     --mark1: #839496;
     --mark2: #657b83;
-    --mark3:#586e75;
+    --mark3: #586e75;
     --accent: #268bd2;
-    --keyword:var(--accent);
-    --operator:#93a1a1;
-    --variable:var(--keyword);
-    --else:#586e75;
-    --code:var(--elm);
-    --disable:#888;
+    --keyword: var(--accent);
+    --operator: #93a1a1;
+    --variable: var(--keyword);
+    --else: #586e75;
+    --code: var(--elm);
+    --disable: #888;
 }
-.content.solarized.fire{
+
+.content.solarized.fire {
     --accent: #dc322f;
-    --operator:#586e75;
-    --else:#839496;
-    --code:#073642;
+    --operator: #586e75;
+    --else: #839496;
+    --code: #073642;
 }
-.content.solarized.gold{
+
+.content.solarized.gold {
     --accent: #b58900;
-    --operator:#586e75;
-    --variable:var(--keyword);
-    --else:#657b83;
-    --code:#002b36;
+    --operator: #586e75;
+    --variable: var(--keyword);
+    --else: #657b83;
+    --code: #002b36;
 }
-.content.solarized.nature{
+
+.content.solarized.nature {
     --accent: #2aa198;
 }
+
 .content.solarized.shadow {
-    --bg:#002b36;
-    --elm:#073642;
+    --bg: #002b36;
+    --elm: #073642;
     --txt0: #fdf6e3;
     --txt1: var(--txt0);
     --txt2: #eee8d5;
@@ -70,12 +74,12 @@
     --mark2: #839496;
     --mark1: #657b83;
     --accent: var(--elm);
-    --keyword:#6c71c4;
-    --operator:#93a1a1;
-    --variable:#d33682;
-    --else:var(--txt2);
-    --code:var(--elm);
-    --disable:#888;
+    --keyword: #6c71c4;
+    --operator: #93a1a1;
+    --variable: #d33682;
+    --else: var(--txt2);
+    --code: var(--elm);
+    --disable: #888;
 }
 
 .content {
@@ -99,7 +103,7 @@ td.input {
     color: var(--txt3);
 }
 
-tr.v-input td{
+tr.v-input td {
     background-color: var(--mark1);
     color: var(--txt3);
 }
@@ -113,18 +117,25 @@ tr.v-input>td.input {
     background-color: var(--accent);
     color: var(--txt1);
 }
-.button{
+
+.button {
     background-color: var(--disable);
     color: var(--txt1);
 }
+
 .button.active {
     background-color: var(--accent);
     color: var(--txt1);
 }
 
-.dark * ,
-.solarized.shadow *{
+.dark *,
+.solarized.shadow * {
     box-shadow: none;
+}
+
+.error {
+    background-color: var(--accent);
+    color: var(--txt1);
 }
 
 .menu {
@@ -136,26 +147,34 @@ tr.v-input>td.input {
 }
 
 @media screen and (max-width:500px) {
-    .menu{
+    .menu {
         background-color: var(--bg);
     }
 }
 
+option{
+    background-color: var(--bg);
+    color:var(--txt2);
+}
+option:checked{
+    background-color: var(--accent);
+    color: var(--txt1);
+}
 
-.code-highlight{
+
+.code-highlight {
     background-color: var(--code);
     color: var(--else);
 }
-.code-highlight span.keyword{
-    color:var(--keyword);
+
+.code-highlight span.keyword {
+    color: var(--keyword);
 }
-.code-highlight span.operator{
-    color:var(--operator);
+
+.code-highlight span.operator {
+    color: var(--operator);
 }
-.code-highlight span.variable{
-    color:var(--variable);
-}
-.error{
-    background-color: var(--accent);
-    color: var(--txt1);
+
+.code-highlight span.variable {
+    color: var(--variable);
 }

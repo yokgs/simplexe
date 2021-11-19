@@ -86,6 +86,9 @@ let app = {
         },
         Rows() {
             return Math.max(7, this.code.split('\n').length);
+        },
+        codeHTML() {
+            return $.highlighter(this.code).replace(/\n/g, '</br>');
         }
     },
     watch: {

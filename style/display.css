@@ -134,14 +134,35 @@ tr.v-input>td.input {
 }
 
 textarea {
-    width: 50%;
+    width: 100%;
+    border: 0;
+    border-radius: 1em;
+    padding: 1em;
+    background-color: transparent;
+    font-family: monospace;
+    box-sizing: border-box;
+    position: absolute;
+    top:0;
+    left: 0;
+    font-size: 1.5rem;
+}
+textarea:not(:focus){
+    color:transparent;
+}
+.code-highlight{
+    width: 100%;
     border: 0;
     border-radius: 1em;
     padding: 1em;
     background-color: rgba(0, 0, 0, .1);
     font-family: monospace;
-    color: #222;
+    color: #fff;
     box-sizing: border-box;
+    font-size: 1.5rem;
+}
+.code{
+    width: 50%;
+    position: relative;
 }
 
 .menu-button {
@@ -162,6 +183,7 @@ textarea {
     justify-content: center;
     align-items: center;
     margin: 10px 0;
+    position: relative;
 }
 .buttons-group {
 position: relative;

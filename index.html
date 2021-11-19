@@ -34,7 +34,10 @@
         </div>
 
         <div class="input-container">
-            <textarea v-model="code" @keypress="refresh" :rows="Rows"></textarea>
+            <div class="code">
+                <div class="code-highlight" v-html="codeHTML" :rows="Rows"></div>
+                <textarea v-model="code" @keypress="refresh" :rows="Rows"></textarea>
+            </div>
             <div class="buttons-group">
                 <button class="button active" @click="refresh">solve</button>
                 <button class="button active" @click="format">format</button>

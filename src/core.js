@@ -181,6 +181,20 @@ let $ = {
         var i = s.replace(v, '');
         return v + '<sub>' + i + '</sub>'
     },
+    highlighter: function (code) {
+        if (/[a-zA-Z]+[\w]*/.test(code)) {
+            var m = [...new Set(code.match(/[a-zA-Z]+[\w]*/g))];
+            for (let i in m) {
+                if (m[i] != 'min' && m[i] != 'max')
+                    code = code.replace(new RegExp(m[i], 'g'), '%%' + m[i] + '%#')
+            }
+        }
+        code = code.replace(/%%/g, '<span class="variable">').replace(/%#/g, '</span>');
+
+        var t = code.replace(/^max /g, '<span class="keyword">max</span> ');
+        return t.replace(/ >= /g, ' <span class="operator">>=</span> ').replace(/ > /g, ' <span class="operator">></span> ').replace(/ < /g, ' <span class="operator"><</span> ').replace(/ <= /g, ' <span class="operator"><=</span> ')
+            .replace(/ = /g, ' <span class="operator">=</span> ').replace(/ \+ /g, ' <span class="operator">+</span> ').replace(/ \- /g, ' <span class="operator">-</span> ');
+    },
     clone: x => JSON.parse(JSON.stringify(x)),
 }
 

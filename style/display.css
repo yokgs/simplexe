@@ -51,20 +51,8 @@ table {
 }
 
 td {
-    border: 1px solid #07f;
+    border: 1px solid;
     padding: .3em;
-}
-
-td.input {
-    background-color: #ff0;
-}
-
-tr.v-input {
-    background-color: #8f0;
-}
-
-tr.v-input>td.input {
-    background-color: #bf0;
 }
 
 .button {
@@ -73,15 +61,12 @@ tr.v-input>td.input {
     border-radius: .5em;
     height: auto;
     font-size: 1rem;
-    background-color: #678;
     opacity: .7;
-    color: #fff;
     box-sizing: border-box;
     cursor: not-allowed;
 }
 
 .button.active {
-    background-color: #07f;
     opacity: 1;
     cursor: pointer;
 }
@@ -95,8 +80,6 @@ tr.v-input>td.input {
     padding: 1em;
     box-sizing: border-box;
     margin: 1em;
-    background-color: #d45;
-    color: #ffe;
     border-radius: .7em;
 }
 
@@ -142,14 +125,16 @@ textarea {
     font-family: monospace;
     box-sizing: border-box;
     position: absolute;
-    top:0;
+    top: 0;
     left: 0;
     font-size: 1.5rem;
 }
-textarea:not(:focus){
-    color:transparent;
+
+textarea:not(:focus) {
+    color: transparent;
 }
-.code-highlight{
+
+.code-highlight {
     width: 100%;
     border: 0;
     border-radius: 1em;
@@ -160,7 +145,8 @@ textarea:not(:focus){
     box-sizing: border-box;
     font-size: 1.5rem;
 }
-.code{
+
+.code {
     width: 50%;
     position: relative;
 }
@@ -185,8 +171,9 @@ textarea:not(:focus){
     margin: 10px 0;
     position: relative;
 }
+
 .buttons-group {
-position: relative;
+    position: relative;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -194,22 +181,27 @@ position: relative;
     box-sizing: border-box;
     margin: 5px;
 }
-.buttons-group>button{
-    margin:5px;
+
+.buttons-group>button {
+    margin: 5px;
 }
+
 @media screen and (max-width:500px) {
-    .input-container{
-        flex-direction:column;
+    .input-container {
+        flex-direction: column;
         justify-content: center;
     }
-    .buttons-group{
+
+    .buttons-group {
         flex-direction: row;
     }
-    .code{
+
+    .code {
         width: calc(100% - 20px);
-        margin: 0 10px ;
+        margin: 0 10px;
     }
-    .menu{
+
+    .menu {
         position: fixed;
         width: 100%;
         height: calc(100% - 60px);
@@ -217,22 +209,26 @@ position: relative;
         border-radius: 0;
         box-shadow: none;
     }
-    .head{
+
+    .head {
         position: static;
     }
 }
-select{
+
+select {
     opacity: 0;
     position: absolute;
-    top:0;
-    left:0;
+    top: 0;
+    left: 0;
 }
-.select{
+
+.select {
     position: relative;
     display: inline-flex;
     cursor: pointer;
 }
-.info{
+
+.info {
     padding: 10px;
     box-sizing: border-box;
     text-align: right;

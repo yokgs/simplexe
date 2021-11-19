@@ -85,7 +85,7 @@ let app = {
             return 'button' + (this.i < this.table.length - 1 ? ' active' : '');
         },
         Rows() {
-            return Math.max(7, this.code.split('\n').length);
+            return Math.max(1, this.code.split('\n').length);
         },
         codeHTML() {
             return $.highlighter(this.code).replace(/\n/g, '</br>');

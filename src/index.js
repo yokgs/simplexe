@@ -32,13 +32,13 @@ let app = {
                 this.OK = true;
                 this.table.push($.data2html(tab, $.heatMap(tab), this.epsilon));
                 this.alpha = $.duality(tab);
-                while ($.hasNext(tab) && this.table.length <= 10) {
+                while ($.hasNext(tab) && this.table.length <= 20) {
                     tab = $.iterate(tab);
                     this.table.push($.data2html(tab, $.heatMap(tab), this.epsilon));
                 }
                 this.solution = tab[0][tab[0].length - 1] + '* = ' + tab[tab.length - 1][tab[tab.length - 1].length - 1];
-                if (this.table.length > 10) {
-                    this.Error = 'Long term operation . double check your equations elseway we do not recommend you to use this algorithm';
+                if (this.table.length > 20) {
+                    this.Error = 'Long term process. please double check your equations';
                     this.OK = false;
                 }
             }
@@ -62,7 +62,7 @@ let app = {
         },
         save() {
             Lockr.set('YS-CACHE', {
-                code:this.code,
+                code: this.code,
                 cache: this.cache,
                 table: this.table,
                 tab: this.tab,
@@ -72,7 +72,7 @@ let app = {
                 OK: this.OK,
                 menu: false,
                 epsilon: this.epsilon,
-                theme:this.theme,
+                theme: this.theme,
                 solution: this.solution
             });
         }
@@ -92,19 +92,19 @@ let app = {
         }
     },
     watch: {
-        theme(o,n) {
-            if (o!=n)
+        theme(o, n) {
+            if (o != n)
                 this.save();
         }
     }
 };
 Vue.createApp(app).mount('#app');
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js')
-    .then(function(registration) {
-      console.log('Registration successful, scope is:', registration.scope);
-    })
-    .catch(function(error) {
-      console.log('Service worker registration failed, error:', error);
-    });
-  }
+    navigator.serviceWorker.register('./src/sw.js')
+        .then(function (registration) {
+            console.log('Registration successful, scope is:', registration.scope);
+        })
+        .catch(function (error) {
+            console.log('Service worker registration failed, error:', error);
+        });
+}

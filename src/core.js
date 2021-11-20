@@ -32,7 +32,7 @@ let $ = {
     heatMap: function (table) {
         if ($.hasNext(table)) {
             let k = table.length - 1;
-            var min = Math.min(...table[k]);
+            var min = Math.min(...table[k].slice(0, table[k].length - 1));
             var en = table[k].indexOf(min),
                 p = [];
             for (let i = 1; i < table.length - 1; i++) {
@@ -182,15 +182,17 @@ let $ = {
         return v + '<sub>' + i + '</sub>'
     },
     highlighter: function (code) {
+        code = code.replace(/^min /, '@@').replace(/^max /, '!@');
         if (/[a-zA-Z]+[\w]*/.test(code)) {
-            var m = [...new Set(code.match(/[a-zA-Z]+[\w]*/g))];
+            var m = [...new Set(code.match(/[a-zA-Z]+[\w]*/g))].sort((x, y) => y.length - x.length);
             for (let i in m) {
-                if (m[i] != 'min' && m[i] != 'max')
+                if (m[i] != 'min' && m[i] != 'max') {
                     code = code.replace(new RegExp(m[i], 'g'), '%%' + m[i] + '%#')
+                        .replace(new RegExp('(?<=\d)' + m[i], 'g'), '%%' + m[i] + '%#')
+                }
             }
         }
-        code = code.replace(/%%/g, '<span class="variable">').replace(/%#/g, '</span>');
-
+        code = code.replace(/%%/g, '<span class="variable">').replace(/%#/g, '</span>').replace('@@', 'min ').replace('!@', 'max ');
         var t = code.replace(/^max /g, '<span class="keyword">max</span> ');
         return t.replace(/ >= /g, ' <span class="operator">>=</span> ').replace(/ > /g, ' <span class="operator">></span> ').replace(/ < /g, ' <span class="operator"><</span> ').replace(/ <= /g, ' <span class="operator"><=</span> ')
             .replace(/ = /g, ' <span class="operator">=</span> ').replace(/ \+ /g, ' <span class="operator">+</span> ').replace(/ \- /g, ' <span class="operator">-</span> ');

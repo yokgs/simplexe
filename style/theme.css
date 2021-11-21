@@ -86,13 +86,17 @@
     background-color: var(--bg);
 }
 
-textarea,
 input,
 button,
 .content {
     color: var(--txt2);
 }
-
+input{
+    caret-color: var(--txt2);
+}
+textarea{
+    caret-color: var(--else);
+}
 td {
     border-color: var(--txt2);
     background-color: var(--elm);

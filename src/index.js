@@ -12,12 +12,14 @@ let app = {
             menu: false,
             epsilon: 4,
             theme: 'light',
+            fontSize:'normal',
             solution: ''
         });
     },
     methods: {
         refresh() {
             this.epsilon = Math.max(Math.min(this.epsilon, 10), 0);
+            //this.code=this.code.replace(/  /g, ' ');
             if (this.code.trim() == '') {
                 this.Error = 'Empty Table';
                 this.OK = false;
@@ -73,6 +75,7 @@ let app = {
                 menu: false,
                 epsilon: this.epsilon,
                 theme: this.theme,
+                fontSize:this.fontSize,
                 solution: this.solution
             });
         }
@@ -88,7 +91,7 @@ let app = {
             return Math.max(1, this.code.split('\n').length);
         },
         codeHTML() {
-            return $.highlighter(this.code+' ').replace(/\n/g, '</br>');
+            return $.highlighter(this.code + ' ').replace(/\n/g, '</br>');
         }
     },
     watch: {

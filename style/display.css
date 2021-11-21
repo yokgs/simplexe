@@ -233,3 +233,19 @@ select {
     text-align: right;
     float: right;
 }
+
+.content.small{
+    font-size: small;
+}
+.content.normal{
+    font-size: 16px;
+}
+.content.medium{
+    font-size: 18px;
+}
+.content.large{
+    font-size: 24px;
+}
+.content.extra.large{
+    font-size: 26px;
+}

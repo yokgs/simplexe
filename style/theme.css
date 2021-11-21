@@ -54,7 +54,6 @@
 .content.solarized.gold {
     --accent: #b58900;
     --operator: #586e75;
-    --variable: var(--keyword);
     --else: #657b83;
     --code: #002b36;
 }
@@ -91,12 +90,15 @@ button,
 .content {
     color: var(--txt2);
 }
-input{
+
+input {
     caret-color: var(--txt2);
 }
-textarea{
+
+textarea {
     caret-color: var(--else);
 }
+
 td {
     border-color: var(--txt2);
     background-color: var(--elm);
@@ -156,11 +158,12 @@ tr.v-input>td.input {
     }
 }
 
-option{
+option {
     background-color: var(--bg);
-    color:var(--txt2);
+    color: var(--txt2);
 }
-option:checked{
+
+option:checked {
     background-color: var(--accent);
     color: var(--txt1);
 }
@@ -181,4 +184,9 @@ option:checked{
 
 .code-highlight span.variable {
     color: var(--variable);
+}
+
+.code-highlight span.comment {
+    color: var(--operator);
+    --opacity: .7;
 }

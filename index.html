@@ -17,7 +17,7 @@
 </head>
 
 <body id="app">
-    <div :class="[theme,'content']">
+    <div :class="[theme,fontSize,'content']">
         <header class="head">
             Simplexe
             <button @click="toggleMenu" class="menu-button">param</button>
@@ -34,12 +34,20 @@
                     <option>solarized nature</option>
                     <option>solarized shadow</option>
                 </select></div></div>
+                <div>size : <div class="select">{{ fontSize }} <select v-model="fontSize">
+                    <option>small</option>
+                    <option>normal</option>
+                    <option>medium</option>
+                    <option>large</option>
+                    <option>extra large</option>
+                </select></div></div>
+
         </div>
 
         <div class="input-container">
             <div class="code">
                 <div class="code-highlight" v-html="codeHTML" :rows="Rows"></div>
-                <textarea v-model="code" @keypress="refresh" :rows="Rows"></textarea>
+                <textarea v-model.trim="code" @keypress="refresh" :rows="Rows"></textarea>
             </div>
             <div class="buttons-group">
                 <button class="button active" @click="refresh">solve</button>

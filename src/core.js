@@ -89,7 +89,7 @@ let $ = {
         eq = eq.replace(/[\s]*\+[\s]*/g, ' + ').replace(/[\s]*\-[\s]*/g, ' - ')
             .replace(/[\s]*=[\s]*/g, ' = ')
             .replace(/[\s]*>[\s]*/g, ' > ').replace(/[\s]*<[\s]*/g, ' < ')
-            .replace(/[\s]*>[\s]*=[\s]*/g, ' >= ').replace(/[\s]*<[\s]*=[\s]*/g, ' <= ').replace(/;/g, '\n');
+            .replace(/[\s]*>[\s]*=[\s]*/g, ' >= ').replace(/[\s]*<[\s]*=[\s]*/g, ' <= ').replace(/;/g, '\n').replace(/###/g, '').replace(/#[\s]*/g, '# ');
         return eq;
     },
     createTable: function (str) {
@@ -100,8 +100,10 @@ let $ = {
                 content: ''
             };
         }
+        eq = eq.filter(x => !x.startsWith('# '))
+
         for (let i in eq) {
-            eq[i] = eq[i].replace(/ \+ /g, '||+').replace(/ \- /g, '||-')
+            eq[i] = eq[i].replace(/#.*/g, '').replace(/ \+ /g, '||+').replace(/ \- /g, '||-')
                 .replace(/ >= /g, '|||>=|||').replace(/ <= /g, '|||<=|||')
                 .replace(/ > /g, '|||>|||').replace(/ < /g, '|||<|||')
                 .replace(/ = /g, '|||=|||').split('|||').map(x => x.split('||').map(e => {
@@ -126,7 +128,7 @@ let $ = {
                 for (let j in eq[0][2]) {
                     var n = eq[0][2][j];
                     var k = n.match(/^(\+|\-)[\d\.\,]+/i)[0].length;
-                    var $var = n.substring(k, n.length);
+                    var $var = n.substring(k, n.length).trim();
                     if (!($var in tabx)) tabx[$var] = 0;
                     tabx[$var] += Number(n.replace(/,/g, '.').substr(0, k));
                 }
@@ -183,6 +185,10 @@ let $ = {
     },
     highlighter: function (code) {
         code = code.replace(/^min /, '@@').replace(/^max /, '!@');
+        var comments = code.match(/#[\w=%()\+\-\s\.\,@!]*(?=(\n|$))/g);
+        for (let i in comments) {
+            code = code.replace(comments[i], '###');
+        }
         if (/[a-zA-Z]+[\w]*/.test(code)) {
             var m = [...new Set(code.match(/[a-zA-Z]+[\w]*/g))].sort((x, y) => y.length - x.length);
             for (let i in m) {
@@ -193,9 +199,12 @@ let $ = {
             }
         }
         code = code.replace(/%%/g, '<span class="variable">').replace(/%#/g, '</span>').replace('@@', 'min ').replace('!@', 'max ');
-        var t = code.replace(/^max /g, '<span class="keyword">max</span> ');
-        return t.replace(/ >= /g, ' <span class="operator">>=</span> ').replace(/ > /g, ' <span class="operator">></span> ').replace(/ < /g, ' <span class="operator"><</span> ').replace(/ <= /g, ' <span class="operator"><=</span> ')
+        var t = code.replace(/^max /g, '<span class="keyword">max</span> ').replace(/ >= /g, ' <span class="operator">>=</span> ').replace(/ > /g, ' <span class="operator">></span> ').replace(/ < /g, ' <span class="operator"><</span> ').replace(/ <= /g, ' <span class="operator"><=</span> ')
             .replace(/ = /g, ' <span class="operator">=</span> ').replace(/ \+ /g, ' <span class="operator">+</span> ').replace(/ \- /g, ' <span class="operator">-</span> ');
+        let i = 0;
+        while (/###/.test(t))
+            t = t.replace('###', '<span class="comment">' + comments[i++] + '</span>');
+        return t;
     },
     clone: x => JSON.parse(JSON.stringify(x)),
 }

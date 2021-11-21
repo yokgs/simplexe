@@ -128,11 +128,10 @@ textarea {
     top: 0;
     left: 0;
     font-size: 1.5rem;
+    caret-color: white;
+    color: rgba(0, 0, 0, .1)!important;
 }
 
-textarea:not(:focus) {
-    color: transparent;
-}
 
 .code-highlight {
     width: 100%;

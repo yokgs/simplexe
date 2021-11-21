@@ -117,31 +117,32 @@ td {
 }
 
 textarea {
-    width: 100%;
-    border: 0;
-    border-radius: 1em;
-    padding: 1em;
     background-color: transparent;
-    font-family: monospace;
-    box-sizing: border-box;
     position: absolute;
     top: 0;
     left: 0;
-    font-size: 1.5rem;
     color: transparent;
+    resize: none;
+    z-index: 1;
 }
 
 
 .code-highlight {
+    background-color: rgba(0, 0, 0, .1);
+    color: #fff;
+    z-index: 0;
+}
+.code-highlight,textarea{ 
     width: 100%;
     border: 0;
     border-radius: 1em;
     padding: 1em;
-    background-color: rgba(0, 0, 0, .1);
-    font-family: monospace;
-    color: #fff;
-    box-sizing: border-box;
+    line-height: 20pt;
     font-size: 1.5rem;
+    box-sizing: border-box;
+    font-family: monospace;
+    overflow: auto;
+    white-space: nowrap;
 }
 
 .code {

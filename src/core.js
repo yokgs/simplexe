@@ -185,9 +185,9 @@ let $ = {
     },
     highlighter: function (code) {
         code = code.replace(/^min /, '@@').replace(/^max /, '!@');
-        var comments = code.match(/#[\w=%()\+\-\s\.\,@!]*(?=(\n|$))/g);
+        var comments = code.match(/#[\w=%()\+\- \.\,@!]*(?=(\n|$))/g);
         for (let i in comments) {
-            code = code.replace(comments[i], '###');
+            code = code.replace(comments[i], '&&&');
         }
         if (/[a-zA-Z]+[\w]*/.test(code)) {
             var m = [...new Set(code.match(/[a-zA-Z]+[\w]*/g))].sort((x, y) => y.length - x.length);
@@ -202,7 +202,7 @@ let $ = {
         var t = code.replace(/^max /g, '<span class="keyword">max</span> ').replace(/ >= /g, ' <span class="operator">>=</span> ').replace(/ > /g, ' <span class="operator">></span> ').replace(/ < /g, ' <span class="operator"><</span> ').replace(/ <= /g, ' <span class="operator"><=</span> ')
             .replace(/ = /g, ' <span class="operator">=</span> ').replace(/ \+ /g, ' <span class="operator">+</span> ').replace(/ \- /g, ' <span class="operator">-</span> ');
         let i = 0;
-        while (/###/.test(t))
+        while (/&&&/.test(t))
             t = t.replace('###', '<span class="comment">' + comments[i++] + '</span>');
         return t;
     },
@@ -217,5 +217,6 @@ function display(table) {
         body.innerHTML += data2html(table);
     }
 }
+
 //display($.createTable('max P = x + y;x + y <= 30;y <= 10'));//'max G=4470B+2316O+2650M;B+O+M<=1000;8B+8B+9M<=8750;9B+6O+45M<=16000'));
 //console.log($.iterate($.createTable('max G=4470B+2316O+2650M;B+O+M<=1000;8B+8B+9M<=8750;9B+6O+45M<=16000')))

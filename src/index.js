@@ -19,7 +19,6 @@ let app = {
     methods: {
         refresh() {
             this.epsilon = Math.max(Math.min(this.epsilon, 10), 0);
-            //this.code=this.code.replace(/  /g, ' ');
             if (this.code.trim() == '') {
                 this.Error = 'Empty Table';
                 this.OK = false;

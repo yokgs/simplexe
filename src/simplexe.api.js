@@ -12,11 +12,20 @@ function simplexe(table) {
     this.hasNext = function () {
         
     };
-    this.base = [];   
+    this.pushVector = function (vector) {
+        
+    };
+    this.mainVector = function (vector) {
+        
+    };
+    this.base = [];
 }
 simplexe.formatSrting = function (string) {
     
 }
 simplexe.fromString = function (string) {
+    
+}
+simplexe.duality = function (matrix) {
     
 }

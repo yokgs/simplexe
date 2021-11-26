@@ -203,7 +203,7 @@ let $ = {
             .replace(/ = /g, ' <span class="operator">=</span> ').replace(/ \+ /g, ' <span class="operator">+</span> ').replace(/ \- /g, ' <span class="operator">-</span> ');
         let i = 0;
         while (/&&&/.test(t))
-            t = t.replace('###', '<span class="comment">' + comments[i++] + '</span>');
+            t = t.replace('&&&', '<span class="comment">' + comments[i++] + '</span>');
         return t;
     },
     clone: x => JSON.parse(JSON.stringify(x)),

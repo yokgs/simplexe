@@ -31,16 +31,28 @@ let $ = {
     },
     heatMap: function (table) {
         if ($.hasNext(table)) {
-            let k = table.length - 1;
-            var min = Math.min(...table[k].slice(0, table[k].length - 1));
-            var en = table[k].indexOf(min),
-                p = [];
-            for (let i = 1; i < table.length - 1; i++) {
-                let r = table[i].slice(0, table[0].length);
-                let t = Math.abs(r[r.length - 1] / r[en]) || Infinity;
-                p = [...p, t];
+            let k = table.length - 1,
+                search = true;
+            var min = table[k].slice(0, table[k].length - 1).sort((x, y) => (x - y)),
+                i = 0,
+                en, sr;
+            while (search) {
+                en = table[k].indexOf(min[i]);
+                var p = [];
+                for (let i = 1; i < table.length - 1; i++) {
+                    let r = table[i].slice(0, table[0].length);
+                    let t = r[r.length - 1] / r[en] || Infinity;
+                    p = [...p, t];
+                }
+                var min$ = p.sort((x, y) => (x - y)).filter(x => (x >= 0)),
+                    j = 0;
+                if (min$.length > 0) search = false;
+                else {
+                    i++;
+                    break;
+                }
+                sr = p.indexOf(min$[j]) + 1;
             }
-            var sr = p.indexOf(Math.min(...p)) + 1;
             return [en, sr];
         }
         return [NaN, NaN]

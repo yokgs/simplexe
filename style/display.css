@@ -210,11 +210,17 @@ textarea {
         right: 0;
         border-radius: 0;
         box-shadow: none;
+        z-index: 5;
     }
 
     .head {
-        position: static;
+        position: fixed;
+        top:0;
+        left:0;
     }
+.content{
+    padding-top: 60px;
+}
 
     .info {
         width: 100%;

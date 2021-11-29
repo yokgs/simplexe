@@ -122,6 +122,7 @@ tr.v-input>td.input {
 .head {
     background-color: var(--accent);
     color: var(--txt1);
+    border-bottom: 1px solid var(--bg);
 }
 
 .button {

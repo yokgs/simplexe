@@ -74,7 +74,9 @@ let app = {
             this.menu = !this.menu;
         },
         save() {
-            Lockr.set('YS-CACHE', this);
+            let newData = {};
+            for (let i in Defaults) newData[i] = this[i];
+            Lockr.set('YS-CACHE', newData);
         }
     },
     computed: {

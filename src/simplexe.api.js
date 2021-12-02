@@ -151,7 +151,7 @@ function simplexe(table) {
         return false;
     };
     this.solve = function (max) {
-        max = max ? ? 10;
+        max = max || 10;
         while (max-- > 0 && this.hasNext())
             this.next();
         return this.tables.length;
@@ -179,7 +179,7 @@ simplexe.genetic = function (equations) {
         mutationRange: 5,
         generation: 20,
         order: 1,
-        
+
     };
     this.initGen = function () {
 

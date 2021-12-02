@@ -1,4 +1,3 @@
-let x = ['abcdefghijklmnopxyz'];
 let empty = n => {
     var t = [];
     for (let i = 0; i < n; i++)
@@ -27,36 +26,36 @@ let $ = {
     },
     hasNext: function (table) {
         let k = table.length - 1;
-        return $.valid(table) && Math.min(...table[k]) < 0;
+        let [en, sr] = $.heatMap(table);
+        return (!Number.isNaN(en) && !Number.isNaN(sr)) && Math.min(...table[k].slice(0, table[k].length - 1)) < 0;
     },
     heatMap: function (table) {
-        if ($.hasNext(table)) {
-            let k = table.length - 1,
-                search = true;
-            var min = table[k].slice(0, table[k].length - 1).sort((x, y) => (x - y)),
-                i = 0,
-                en, sr;
-            while (search) {
-                en = table[k].indexOf(min[i]);
-                var p = [];
-                for (let i = 1; i < table.length - 1; i++) {
-                    let r = table[i].slice(0, table[0].length);
-                    let t = r[r.length - 1] / r[en] || Infinity;
-                    p = [...p, t];
-                }
-                var min$ = p.sort((x, y) => (x - y)).filter(x => (x >= 0)),
-                    j = 0;
-                if (min$.length > 0) search = false;
-                else {
-                    i++;
-                    break;
-                }
-                sr = p.indexOf(min$[j]) + 1;
+        let k = table.length - 1,
+            search = true;
+        var min = table[k].slice(0, table[k].length - 1).filter(x => (x < 0)).sort((x, y) => (x - y)),
+            i = 0,
+            en = NaN,
+            sr = NaN;
+        while (search && i < min.length) {
+            en = table[k].indexOf(min[i]);
+            var p = [];
+            for (let j = 1; j < table.length - 1; j++) {
+                let r = table[j].slice(0, table[0].length);
+                let t = r[r.length - 1] / r[en] || Infinity;
+                p = [...p, t];
             }
-            return [en, sr];
+            var min$ = p.sort((x, y) => (x - y)).filter(x => (x >= 0)),
+                j = 0;
+            if (min$.length > 0) search = false;
+            else {
+                i++;
+                break;
+            }
+            sr = p.indexOf(min$[j]) + 1;
         }
-        return [NaN, NaN]
-
+        if (Number.isNaN(en) || Number.isNaN(sr))
+            return [NaN, NaN];
+        return [en, sr];
     },
     valid: function (table) {
         return true;

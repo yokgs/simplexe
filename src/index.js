@@ -11,8 +11,8 @@ let app = {
             OK: true,
             menu: false,
             epsilon: 4,
-            theme: 'light',
-            fontSize:'normal',
+            theme: 'solarized',
+            fontSize: 'normal',
             solution: ''
         });
     },
@@ -34,7 +34,11 @@ let app = {
                 this.table.push($.data2html(tab, $.heatMap(tab), this.epsilon));
                 this.alpha = $.duality(tab);
                 while ($.hasNext(tab) && this.table.length <= 20) {
-                    tab = $.iterate(tab);
+                   // try {
+                        tab = $.iterate(tab);
+                  //  } catch (_) {
+                  //      break;
+                  //  }
                     this.table.push($.data2html(tab, $.heatMap(tab), this.epsilon));
                 }
                 this.solution = tab[0][tab[0].length - 1] + '* = ' + tab[tab.length - 1][tab[tab.length - 1].length - 1];
@@ -74,7 +78,7 @@ let app = {
                 menu: false,
                 epsilon: this.epsilon,
                 theme: this.theme,
-                fontSize:this.fontSize,
+                fontSize: this.fontSize,
                 solution: this.solution
             });
         }

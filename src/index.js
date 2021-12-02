@@ -1,20 +1,28 @@
+let Defaults = {
+        code: "max G = 4470B + 2316O + 2650M;B + O + M <= 1000;8B + 8O + 9M <= 8750;9B + 6O + 45M <= 16000",
+        cache: [],
+        table: [],
+        tab: [],
+        i: 0,
+        alpha: '',
+        Error: '',
+        OK: true,
+        menu: false,
+        epsilon: 4,
+        theme: 'solarized',
+        fontSize: 'normal',
+        solution: '',
+        version: '1.0.1'
+    },
+    data = Lockr.get('YS-CACHE', Defaults);
+for (let i in Defaults) {
+    if (!(i in data))
+        data[i] = Defaults[i];
+}
+
 let app = {
     data() {
-        return Lockr.get('YS-CACHE', {
-            code: "max G = 4470B + 2316O + 2650M;B + O + M <= 1000;8B + 8O + 9M <= 8750;9B + 6O + 45M <= 16000",
-            cache: [],
-            table: [],
-            tab: [],
-            i: 0,
-            alpha: '',
-            Error: '',
-            OK: true,
-            menu: false,
-            epsilon: 4,
-            theme: 'solarized',
-            fontSize: 'normal',
-            solution: ''
-        });
+        return data;
     },
     methods: {
         refresh() {
@@ -34,11 +42,11 @@ let app = {
                 this.table.push($.data2html(tab, $.heatMap(tab), this.epsilon));
                 this.alpha = $.duality(tab);
                 while ($.hasNext(tab) && this.table.length <= 20) {
-                   // try {
-                        tab = $.iterate(tab);
-                  //  } catch (_) {
-                  //      break;
-                  //  }
+                    // try {
+                    tab = $.iterate(tab);
+                    //  } catch (_) {
+                    //      break;
+                    //  }
                     this.table.push($.data2html(tab, $.heatMap(tab), this.epsilon));
                 }
                 this.solution = tab[0][tab[0].length - 1] + '* = ' + tab[tab.length - 1][tab[tab.length - 1].length - 1];
@@ -66,21 +74,7 @@ let app = {
             this.menu = !this.menu;
         },
         save() {
-            Lockr.set('YS-CACHE', {
-                code: this.code,
-                cache: this.cache,
-                table: this.table,
-                tab: this.tab,
-                i: 0,
-                alpha: '',
-                Error: this.Error,
-                OK: this.OK,
-                menu: false,
-                epsilon: this.epsilon,
-                theme: this.theme,
-                fontSize: this.fontSize,
-                solution: this.solution
-            });
+            Lockr.set('YS-CACHE', this);
         }
     },
     computed: {

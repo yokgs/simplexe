@@ -67,31 +67,62 @@ let $ = {
         }
     },*/
     duality: function (table) {
-        /*var l = table.length - 2,
-            resEq = [...table[l - 1]],
-            labels = [...table[0]];
-        var nLabels = $.generate(labels, l);*/
-        let list = ["int"],table2=[];
-        //console.log(table);
+        let list = ["number"],
+            table2 = [],
+            op = [];
         for (let i = 0; i < table.length; i++) {
-            let ls = table[i][0]
+            let ls = table[i][0],
+                b = table[i][2];
             if (/^min/.test(ls)) {
 
             } else {
                 let subtable = [];
                 ls.forEach(x => {
-                    var k = x.match(/^(\+|\-)[\d\.\,]+/i)[0].length;
-                    var nom = x.substring(k, x.length).trim();
-                    if (nom == "") nom = "int";
+                    var [nom, valeur] = $.NumberConverter(x);
                     if (!list.includes(nom)) list.push(nom);
                     if (typeof subtable[list.indexOf(nom)] != 'number') subtable[list.indexOf(nom)] = 0;
-                    subtable[list.indexOf(nom)] += Number(x.replace(/,/g, '.').substr(0, k));
+                    subtable[list.indexOf(nom)] += valeur;
                 });
-               
+                b.forEach(x => {
+                    var [nom, valeur] = $.NumberConverter(x);
+                    if (!list.includes(nom)) list.push(nom);
+                    if (typeof subtable[list.indexOf(nom)] != 'number') subtable[list.indexOf(nom)] = 0;
+                    subtable[list.indexOf(nom)] -= valeur;
+                });
                 table2.push(subtable);
-            } 
-        }console.log(table2, list);
+                op.push(...table[i][1]);
+            }
+        }
+        table2.map(x => {
+            for (let i = 0; i < x.length; i++)
+                x[i] = typeof x[i] == 'number' ? x[i] : 0;
+            return x;
+        });
+        largerow = Math.max(...table2.map(x => x.length));
+        table2.map(x => {
+            while (x.length < largerow)
+                x.push(0);
+            return x;
+        });
+        console.log(table2, largerow, list, op);
+        finalTab = [
+            [...list, '%operator%']
+        ];
+        for (let i = 0; i < table2.length; i++) {
+            finalTab.push([...table2[i], op[i]]);
+        }
 
+
+        newNames = 'NUXOVH'.split('');
+        newNames.filter(x => !list.includes(x));
+        console.log(finalTab,newNames);
+    },
+    NumberConverter: function (number) {
+        var k = number.match(/^(\+|\-)[\d\.\,]+/i)[0].length;
+        var nom = number.substring(k, number.length).trim(),
+            valeur = Number(number.replace(/,/g, '.').substr(0, k));
+        if (nom == "") nom = "number";
+        return [nom, valeur];
     },
     generate: function (old, size) {
         var r_ = 'abcdefghijklmnopqrstuvwyz',
@@ -149,7 +180,7 @@ let $ = {
             /*eq =*/
             $.duality($.clone(eq));
         }
-        if (!res) res = '$P';
+        if (!res) res = 'P';
         let tab = [],
             tabx = {},
             ii = 1;
@@ -165,7 +196,7 @@ let $ = {
             } else {
                 var com = eq[i][1][0];
                 if (['<', '<=', '>=', '>'].includes(com)) {
-                    var extra = (com == '>=' || com == '>' ? '-' : '+') + '1X' + ii;
+                    var extra = (com == '>=' || com == '>' ? '-' : '+') + '1A' + ii;
                     eq[i][0].push(extra);
                     ii++;
                 }

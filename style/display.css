@@ -25,7 +25,6 @@ input {
     border: 1px solid rgba(0, 0, 0, .1);
     text-align: center;
     padding: 10px;
-    -webkit-appearance: none;
 }
 
 button {
@@ -37,8 +36,8 @@ button {
 }
 
 input:invalid {
-    background-color: #d45;
-    color: #fff;
+    outline:#f00 solid 2px;
+    color: #f00;
 }
 
 table {
@@ -117,7 +116,7 @@ td {
     border-bottom: 1px solid #000;
 }
 
-textarea {
+.highlighted .hidden-textarea {
     background-color: transparent;
     position: absolute;
     top: 0;
@@ -127,9 +126,13 @@ textarea {
     z-index: 1;
 }
 
+.code:not(.highlighted) .code-highlight {
+    display: none;
+}
 
-.code-highlight {
-    background-color: rgba(0, 0, 0, .1);
+.highlighted .code-highlight,
+.code:not(.highlighted) .hidden-textarea {
+    /*background-color: rgba(0, 0, 0, .1);*/
     color: #fff;
     z-index: 0;
 }
@@ -215,12 +218,13 @@ textarea {
 
     .head {
         position: fixed;
-        top:0;
-        left:0;
+        top: 0;
+        left: 0;
     }
-.content{
-    padding-top: 60px;
-}
+
+    .content {
+        padding-top: 60px;
+    }
 
     .info {
         width: 100%;

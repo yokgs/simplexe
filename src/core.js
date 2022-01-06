@@ -5,24 +5,23 @@ let empty = n => {
     return t;
 }
 let $ = {
-    iterate: function (table$) {
-        var table = $.clone(table$);
-        if ($.hasNext(table)) {
-            var [en, sr] = $.heatMap(table);
-            var table_ = $.clone(table);
-            for (let i = 1; i < table.length; i++) {
-                for (let j = 0; j < table[0].length; j++) {
-                    if (i == sr) {
-                        table[i][j] /= table_[i][en];
-                    } else if (j == en) {
-                        table[i][j] = 0;
-                    } else {
-                        table[i][j] -= table_[i][en] / table_[sr][en] * table_[sr][j];
-                    }
+    iterate: function (table) {
+        var table2 = $.clone(table);
+        if ($.hasNext(table2)) {
+            var [en, sr] = $.heatMap(table2);
+            var table = $.clone(table2);
+            for (let i = 1; i < table2.length; i++) {
+                for (let j = 0; j < table2[0].length; j++) {
+                    if (i == sr)
+                        table2[i][j] /= table[i][en];
+                    else if (j == en)
+                        table2[i][j] = 0;
+                    else
+                        table2[i][j] -= table[i][en] / table[sr][en] * table[sr][j];
                 }
             }
         }
-        return table;
+        return table2;
     },
     hasNext: function (table) {
         let k = table.length - 1;
@@ -44,14 +43,13 @@ let $ = {
                 let t = r[r.length - 1] / r[en] || Infinity;
                 p = [...p, t];
             }
-            var min$ = p.sort((x, y) => (x - y)).filter(x => (x >= 0)),
-                j = 0;
+            var min$ = [...p].sort((x, y) => (x - y)).filter(x => (x >= 0));
             if (min$.length > 0) search = false;
             else {
                 i++;
                 break;
             }
-            sr = p.indexOf(min$[j]) + 1;
+            sr = p.indexOf(min$[0]) + 1;
         }
         if (Number.isNaN(en) || Number.isNaN(sr))
             return [NaN, NaN];
@@ -69,11 +67,30 @@ let $ = {
         }
     },*/
     duality: function (table) {
-        var l = table.length - 2,
+        /*var l = table.length - 2,
             resEq = [...table[l - 1]],
             labels = [...table[0]];
-        var nLabels = $.generate(labels, l);
+        var nLabels = $.generate(labels, l);*/
+        let list = ["int"],table2=[];
+        //console.log(table);
+        for (let i = 0; i < table.length; i++) {
+            let ls = table[i][0]
+            if (/^min/.test(ls)) {
 
+            } else {
+                let subtable = [];
+                ls.forEach(x => {
+                    var k = x.match(/^(\+|\-)[\d\.\,]+/i)[0].length;
+                    var nom = x.substring(k, x.length).trim();
+                    if (nom == "") nom = "int";
+                    if (!list.includes(nom)) list.push(nom);
+                    if (typeof subtable[list.indexOf(nom)] != 'number') subtable[list.indexOf(nom)] = 0;
+                    subtable[list.indexOf(nom)] += Number(x.replace(/,/g, '.').substr(0, k));
+                });
+               
+                table2.push(subtable);
+            } 
+        }console.log(table2, list);
 
     },
     generate: function (old, size) {
@@ -105,13 +122,12 @@ let $ = {
     },
     createTable: function (str) {
         var eq = $.format(str).split('\n');
-        if (!/^m(in|ax) ([\w]+ =)*/.test(eq[0])) {
+        if (!/^m(in|ax) ([\w]+ )*=/.test(eq[0])) {
             return {
-                type: 'error',
-                content: ''
+                type: 'error'
             };
         }
-        eq = eq.filter(x => !x.startsWith('# '))
+        eq = eq.filter(x => !x.startsWith('# '));
 
         for (let i in eq) {
             eq[i] = eq[i].replace(/#.*/g, '').replace(/ \+ /g, '||+').replace(/ \- /g, '||-')
@@ -126,10 +142,13 @@ let $ = {
                     return e;
                 }));
         }
-        /*if (op == "min") {
-            eq = $.duality(eq);
-        }*/
-        let [op, res] = eq[0][0][0].split(' ');
+
+
+        let [op, res] = eq[0][0][0].split(' '); // op = { max | min } res = l'equation objective
+        if (op == "min") {
+            /*eq =*/
+            $.duality($.clone(eq));
+        }
         if (!res) res = '$P';
         let tab = [],
             tabx = {},

@@ -12,7 +12,8 @@ let Defaults = {
         theme: 'solarized',
         fontSize: 'normal',
         solution: '',
-        version: '1.0.1'
+        version: '1.0.1',
+        highlighted:true
     },
     data = Lockr.get('YS-CACHE', Defaults);
 for (let i in Defaults) {
@@ -40,7 +41,7 @@ let app = {
             } else {
                 this.OK = true;
                 this.table.push($.data2html(tab, $.heatMap(tab), this.epsilon));
-                this.alpha = $.duality(tab);
+                //this.alpha = $.duality(tab);
                 while ($.hasNext(tab) && this.table.length <= 20) {
                     // try {
                     tab = $.iterate(tab);
@@ -77,6 +78,9 @@ let app = {
             let newData = {};
             for (let i in Defaults) newData[i] = this[i];
             Lockr.set('YS-CACHE', newData);
+        },
+        toggleHighlight() {
+            this.highlighted = !this.highlighted;
         }
     },
     computed: {
@@ -91,6 +95,9 @@ let app = {
         },
         codeHTML() {
             return $.highlighter(this.code + ' ').replace(/\n/g, '</br>');
+        },
+        highlightClass() {
+            return this.highlighted ? "highlighted" : "";
         }
     },
     watch: {

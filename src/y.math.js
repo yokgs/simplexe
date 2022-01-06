@@ -1,6 +1,7 @@
 let YMath = {
     parse: function (string) {
-
+        let code = string;
+        return code;
     },
     highlight: function (string) {
 

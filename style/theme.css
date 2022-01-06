@@ -179,7 +179,7 @@ option:checked {
 }
 
 
-.code-highlight {
+.highlighted .code-highlight {
     background-color: var(--code);
     color: var(--else);
 }
@@ -199,4 +199,8 @@ option:checked {
 .code-highlight span.comment {
     color: var(--operator);
     --opacity: .7;
+}
+.code:not(.highlighted) .hidden-textarea{
+    color: var(--else);
+    background-color: var(--code);
 }

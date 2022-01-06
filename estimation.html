@@ -7,11 +7,11 @@
     <meta name="author" content="Yazid Slila">
     <link rel="icon" href="assets/x256.png" type="image/png">
     <title>Simplexe - Yazid Slila</title>
-    <script defer src="src/simplexe .api.js"></script>
-    <script defer src="src/core.js"></script>
+    <script defer src="src/estimation.api.js"></script>
+    <script defer src="src/y.js"></script>
     <script src="src/vue.js"></script>
     <script src="https://unpkg.com/lockr@0.8.5/lockr.js"></script>
-    <script defer src="src/index.min.js"></script>
+    <script defer src="src/estimation.app.js"></script>
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" type="text/css" href="style/display.min.css">
     <link rel="stylesheet" type="text/css" href="style/theme.min.css">
@@ -20,7 +20,7 @@
 <body id="app">
     <div :class="[theme,fontSize,'content']">
         <header class="head">
-            Simplexe
+            Estimation
             <button @click="toggleMenu" class="menu-button">param</button>
         </header>
         <div v-if="menu" class="menu">
@@ -44,35 +44,18 @@
                         <option>extra large</option>
                     </select></div>
             </div>
-            <div @click="toggleHighlight">code highlighting</div>
         </div>
-
-        <div class="input-container">
-            <div :class="['code',highlightClass]">
-                <div v-if="highlighted" class="code-highlight" v-html="codeHTML"></div>
-                <textarea class="hidden-textarea" v-model.trim="code" @keypress="refresh" :rows="Rows"></textarea>
-            </div>
-            <div class="buttons-group">
-                <button class="button active" @click="refresh">solve</button>
-                <button class="button active" @click="format">format</button>
-            </div>
-        </div>
-        <div class="info">
-            <div>nombre des iterations : {{ table.length == 0 ? 0 :table.length - 1}}</div>
-            <div>iteration numéro : {{ i }}</div>
-            <div>precision : {{ epsilon }}</div>
-            <div v-if="OK || i==table.length-1">{{ solution }}</div>
-            {{ alpha }}
-        </div>
-        <div v-if="OK" v-html="table[i]"></div>
-        <div class="error" v-else v-html="Error"></div>
-
-        <div v-if="OK" class="navigation">
-            <button :class="prevStyle" @click="prev">prev</button>
-            <button :class="nextStyle" @click="next">next</button>
-        </div>
-    </div>
-
+    <button @click="addRow">row</button>
+    <button @click="addColumn">column</button>
+    <textarea v-model="rawEntries" @keyup="parseInput">
+    </textarea>
+<table>
+    <tr v-for="i in estimationTable">
+        <td @click="alert(estimationTable.indexOf(i))" v-for="j in i">
+            {{ Number(j.toFixed(epsilon)) }}
+        </td>
+    </tr>
+</table>
 </body>
 
 </html>

@@ -20,7 +20,7 @@
     <div :class="[theme,fontSize,'content']">
         <header class="head">
             Simplexe
-            <button @click="toggleMenu" class="menu-button">param</button>
+            <button @click="toggleMenu" class="menu-button">settings</button>
         </header>
         <div v-if="menu" class="menu">
             <div>precision : <input v-model="epsilon" min="0" max="10" @change="refresh" type="number">

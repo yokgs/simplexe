@@ -67,31 +67,30 @@ let $ = {
         }
     },*/
     duality: function (table) {
+        let [_, res] = table[0][0][0].split(' ');
         let list = ["number"],
             table2 = [],
             op = [];
         for (let i = 0; i < table.length; i++) {
             let ls = table[i][0],
                 b = table[i][2];
-            if (/^min/.test(ls)) {
-
-            } else {
-                let subtable = [];
+            let subtable = [];
+            if (!/^min/.test(ls)) {
                 ls.forEach(x => {
                     var [nom, valeur] = $.NumberConverter(x);
                     if (!list.includes(nom)) list.push(nom);
                     if (typeof subtable[list.indexOf(nom)] != 'number') subtable[list.indexOf(nom)] = 0;
                     subtable[list.indexOf(nom)] += valeur;
                 });
-                b.forEach(x => {
-                    var [nom, valeur] = $.NumberConverter(x);
-                    if (!list.includes(nom)) list.push(nom);
-                    if (typeof subtable[list.indexOf(nom)] != 'number') subtable[list.indexOf(nom)] = 0;
-                    subtable[list.indexOf(nom)] -= valeur;
-                });
-                table2.push(subtable);
-                op.push(...table[i][1]);
             }
+            b.forEach(x => {
+                var [nom, valeur] = $.NumberConverter(x);
+                if (!list.includes(nom)) list.push(nom);
+                if (typeof subtable[list.indexOf(nom)] != 'number') subtable[list.indexOf(nom)] = 0;
+                subtable[list.indexOf(nom)] -= valeur;
+            });
+            table2.push(subtable);
+            op.push(...table[i][1]);
         }
         table2.map(x => {
             for (let i = 0; i < x.length; i++)
@@ -104,7 +103,6 @@ let $ = {
                 x.push(0);
             return x;
         });
-        console.log(table2, largerow, list, op);
         finalTab = [
             [...list, '%operator%']
         ];
@@ -112,10 +110,47 @@ let $ = {
             finalTab.push([...table2[i], op[i]]);
         }
 
+        varPrefix = 'UXVYZLHRQ'.split('').filter(x => !list.includes(x))[0];
+        let dual = [];
+        dual[0] = [];
+        for (let k = 1; k < finalTab.length - 1; k++)
+            dual[0][k] = varPrefix + k;
+        for (let i = 0; i < finalTab[0].length - 1; i++) {
+            dual[i + 1] = [];
+            for (let k = 1; k < finalTab.length; k++) {
+                let n = finalTab[k][finalTab[k].length - 1];
+                dual[i + 1][k - 1] = finalTab[k][i] * (n == "<" || n == "<=" && k > 1 ? -1 : 1);
+            }
+        }
+        extra = [
+            []
+        ];
+        for (let i = 0; i < dual.length - 1; i++) {
+            extra[i + 1] = [];
+            for (let j = 0; j < dual.length - 2; j++) {
+                if (i == 0)
+                    extra[0][j] = `A${j + 1}`;
+                extra[i + 1][j] = i == j ? 1 : 0;
+            }
+        }
 
-        newNames = 'NUXOVH'.split('');
-        newNames.filter(x => !list.includes(x));
-        console.log(finalTab,newNames);
+        let dual2 = $.clone(dual);
+        for (let i = 2; i < dual2.length; i++) {
+            dual2[i - 1] = dual2[i];
+        }
+        dual2[dual2.length - 1] = [...dual[1]];
+        extra.map((x, i) => {
+            dual2[i].push(...x);
+        });
+        dual2[0][0] = res;
+        dual2.forEach(x => {
+            let tmp = typeof x[0] == 'number' ? x[0] * -1 : x[0];
+            for (let i = 1; i < x.length; i++) {
+                x[i - 1] = x[i];
+            }
+            x[x.length - 1] = tmp;
+        })
+        return dual2;
     },
     NumberConverter: function (number) {
         var k = number.match(/^(\+|\-)[\d\.\,]+/i)[0].length;
@@ -123,25 +158,6 @@ let $ = {
             valeur = Number(number.replace(/,/g, '.').substr(0, k));
         if (nom == "") nom = "number";
         return [nom, valeur];
-    },
-    generate: function (old, size) {
-        var r_ = 'abcdefghijklmnopqrstuvwyz',
-            ens = [];
-        var r = [...r_, ...r_.toUpperCase()];
-        for (let i of r) {
-            if (!old.includes(i))
-                ens.push(i);
-        }
-        /*if (ens.length < size) {
-            var C = ens[Math.floor(Math.random() * ens.length)].toUpperCase();
-            ens=r.map(x=>(C+x))
-        }*/
-        var v = ens[Math.floor(Math.random() * ens.length)],
-            t = [];
-        for (let i = 0; i < size; i++) {
-            t.push(v + (i + 1));
-        }
-        return t
     },
     format: function (str) {
         var eq = str.trim().replace(/\|/g, '').replace(/[\n]+/g, ';').replace(/[;]+/g, ';').replace(/[\s]+/g, ' ');
@@ -173,13 +189,9 @@ let $ = {
                     return e;
                 }));
         }
-
-
         let [op, res] = eq[0][0][0].split(' '); // op = { max | min } res = l'equation objective
-        if (op == "min") {
-            /*eq =*/
-            $.duality($.clone(eq));
-        }
+        if (op == "min")
+            return $.duality($.clone(eq));
         if (!res) res = 'P';
         let tab = [],
             tabx = {},
@@ -187,11 +199,9 @@ let $ = {
         for (let i in eq) {
             if (i == 0) {
                 for (let j in eq[0][2]) {
-                    var n = eq[0][2][j];
-                    var k = n.match(/^(\+|\-)[\d\.\,]+/i)[0].length;
-                    var $var = n.substring(k, n.length).trim();
+                    let [$var, valeur] = $.NumberConverter(eq[0][2][j])
                     if (!($var in tabx)) tabx[$var] = 0;
-                    tabx[$var] += Number(n.replace(/,/g, '.').substr(0, k));
+                    tabx[$var] += valeur;
                 }
             } else {
                 var com = eq[i][1][0];
@@ -202,12 +212,10 @@ let $ = {
                 }
                 tab[i - 1] = {};
                 for (let j in eq[i][0]) {
-                    var n = eq[i][0][j];
-                    var k = n.match(/^(\+|\-)[\d\.\,]+/i)[0].length;
-                    var $var = n.substring(k, n.length);
+                    let [$var, valeur] = $.NumberConverter(eq[i][0][j]);
                     if (!($var in tab[i - 1])) tab[i - 1][$var] = 0;
                     if (!($var in tabx)) tabx[$var] = 0;
-                    tab[i - 1][$var] += Number(n.replace(/,/g, '.').substr(0, k));
+                    tab[i - 1][$var] += valeur;
                 }
                 tab[i - 1][res] = Number(eq[i][2][0]);
             }
@@ -240,9 +248,12 @@ let $ = {
         return '<table>' + tab.map((x, i) => ('<tr' + (i == sr ? ' class="v-input"' : '') + '>' + x.map((t, j) => ('<td width="' + (100 / x.length) + '%"' + (j == en ? ' class="input"' : '') + '>' + (typeof t == 'number' ? Number(t.toFixed(prec)) : $.indexHTML(t)) + '</td>')).join('') + '</tr>')).join('') + '</table>'
     },
     indexHTML: function (s) {
-        var v = (s.match(/^[a-zA-Z]+/) || [''])[0];
-        var i = s.replace(v, '');
-        return v + '<sub>' + i + '</sub>'
+        try {
+            var v = (s.match(/^[a-zA-Z]+/) || [''])[0];
+            var i = s.replace(v, '');
+            return v + '<sub>' + i + '</sub>'
+        } catch (_) {}
+        return s + '';
     },
     highlighter: function (code) {
         code = code.replace(/^min /, '@@').replace(/^max /, '!@');

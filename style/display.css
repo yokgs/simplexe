@@ -36,7 +36,7 @@ button {
 }
 
 input:invalid {
-    outline:#f00 solid 2px;
+    outline: #f00 solid 2px;
     color: #f00;
 }
 
@@ -277,4 +277,18 @@ select {
 .content.extra.large {
     --font: 1.5rem;
     --line: 2rem;
+}
+
+
+.menu .highlighted::after {
+    content: "on";
+    font-size: .7em;
+    height: 1.3em;
+    width: 1.3em;
+    border-radius: 50%;
+    background-color: var(--txt2);
+    color: var(--bg);
+    display: inline-flex;
+    justify-content: center;
+    margin-left: 1em;
 }

@@ -7,10 +7,9 @@
     <meta name="author" content="Yazid Slila">
     <link rel="icon" href="assets/x256.png" type="image/png">
     <title>Simplexe - Yazid Slila</title>
-    <script defer src="src/simplexe .api.js"></script>
-    <script defer src="src/core.js"></script>
-    <script src="src/vue.js"></script>
     <script src="https://unpkg.com/lockr@0.8.5/lockr.js"></script>
+    <script defer src="src/core.min.js"></script>
+    <script src="src/vue.js"></script>
     <script defer src="src/index.min.js"></script>
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" type="text/css" href="style/display.min.css">
@@ -24,7 +23,7 @@
             <button @click="toggleMenu" class="menu-button">param</button>
         </header>
         <div v-if="menu" class="menu">
-            <div>display precision : <input v-model="epsilon" min="0" max="10" @change="refresh" type="number">
+            <div>precision : <input v-model="epsilon" min="0" max="10" @change="refresh" type="number">
             </div>
             <div>theme : <div class="select">{{ theme }} <select v-model="theme">
                         <option>light</option>
@@ -36,7 +35,7 @@
                         <option>solarized shadow</option>
                     </select></div>
             </div>
-            <div>size : <div class="select">{{ fontSize }} <select v-model="fontSize">
+            <div>font size : <div class="select">{{ fontSize }} <select v-model="fontSize">
                         <option>small</option>
                         <option>normal</option>
                         <option>medium</option>
@@ -44,7 +43,7 @@
                         <option>extra large</option>
                     </select></div>
             </div>
-            <div @click="toggleHighlight">code highlighting</div>
+            <div @click="toggleHighlight" :class="highlightClass">code highlighting</div>
         </div>
 
         <div class="input-container">
@@ -58,8 +57,8 @@
             </div>
         </div>
         <div class="info">
-            <div>nombre des iterations : {{ table.length == 0 ? 0 :table.length - 1}}</div>
-            <div>iteration numéro : {{ i }}</div>
+            <div>number of iterations : {{ table.length == 0 ? 0 :table.length - 1}}</div>
+            <div>iteration : {{ i }}</div>
             <div>precision : {{ epsilon }}</div>
             <div v-if="OK || i==table.length-1">{{ solution }}</div>
             {{ alpha }}
@@ -68,7 +67,7 @@
         <div class="error" v-else v-html="Error"></div>
 
         <div v-if="OK" class="navigation">
-            <button :class="prevStyle" @click="prev">prev</button>
+            <button :class="prevStyle" @click="prev">previous</button>
             <button :class="nextStyle" @click="next">next</button>
         </div>
     </div>

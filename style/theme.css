@@ -8,6 +8,11 @@
     --mark2: #bf0;
     --mark3: #0f0;
     --accent: #07f;
+    --keyword: #2b34e7;
+    --operator: #caac00;
+    --variable: var(--keyword);
+    --else: #344246;
+    --code: var(--elm);
     --disable: #888;
 }
 
@@ -21,7 +26,13 @@
     --mark2: rgb(150, 160, 119);
     --mark3: rgb(117, 160, 117);
     --accent: #4a4a4a;
+    --keyword: #8388ee;
+    --operator: #5ec9c9;
+    --variable: var(--keyword);
+    --else: #7195a0;
+    --code: var(--elm);
     --disable: #888;
+
 }
 
 .content.solarized {
